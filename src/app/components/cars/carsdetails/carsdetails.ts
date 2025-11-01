@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Car } from '../../../models/car';
 
 @Component({
   selector: 'app-carsdetails',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './carsdetails.scss',
 })
 export class Carsdetails {
-
+  car: Car = new Car(0, '');
 }
