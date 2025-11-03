@@ -1,9 +1,48 @@
-<br />
 <div class="container">
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="card">
-        <div class="card-body"></div>
+  <div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8 col-sm-10">
+      <div class="card mb-3">
+        <h2 class="my-3 text-center card-header">Register a new car</h2>
+
+        <div class="card-body">
+          <mdb-form-control class="mb-3">
+            <input mdbInput type="text" id="carName" class="form-control" [(ngModel)]="car.name" />
+            <label mdbLabel class="form-label" for="carName">Name</label>
+          </mdb-form-control>
+
+          <mdb-form-control class="mb-3">
+            <input mdbInput type="text" id="carName" class="form-control" [(ngModel)]="car.brand" />
+            <label mdbLabel class="form-label" for="carName">Brand</label>
+          </mdb-form-control>
+          <!-- 
+          <mdb-select class="mb-3" label="Brand" [(ngModel)]="car.brand">
+            <mdb-option value="1">Toyota</mdb-option>
+            <mdb-option value="2">Volkswagen</mdb-option>
+            <mdb-option value="3">Honda</mdb-option>
+          </mdb-select> -->
+
+          <mdb-form-control class="mb-3">
+            <input
+              mdbInput
+              type="number"
+              id="carYear"
+              class="form-control"
+              [(ngModel)]="car.manufacturedYear"
+            />
+            <label mdbLabel class="form-label" for="carYear">Year</label>
+          </mdb-form-control>
+        </div>
+
+        <div class="card-footer text-center">
+          <button
+            type="button"
+            class="btn btn-primary btn-rounded w-100"
+            mdbRipple
+            (click)="register()"
+          >
+            Save
+          </button>
+        </div>
       </div>
     </div>
   </div>

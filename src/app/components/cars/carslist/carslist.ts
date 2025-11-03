@@ -9,14 +9,20 @@ import { RouterLink } from '@angular/router';
   styleUrl: './carslist.scss',
 })
 export class Carslist {
-  delete() {
-    throw new Error('Method not implemented.');
-  }
   list: Car[] = [];
 
   constructor() {
-    this.list.push(new Car(1, 'Toyota'));
-    this.list.push(new Car(2, 'Honda'));
-    this.list.push(new Car(3, 'Ford'));
+    this.list.push(new Car(1, 'Corolla Hybrid', 'Toyota', 2020));
+    this.list.push(new Car(2, 'Civic Advanced Hybrid', 'Honda', 2019));
+    this.list.push(new Car(3, 'Mustang Mach-E', 'Ford', 2018));
+  }
+
+  deleteById(car: Car) {
+    if (confirm('Are you sure you want to delete this car?')) {
+      let i = this.list.findIndex((x) => {
+        return x.id == car.id;
+      });
+      this.list.splice(i, 1);
+    }
   }
 }
