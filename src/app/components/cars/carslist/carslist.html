@@ -3,9 +3,10 @@
     <div class="col-12">
       <h2 class="my-3 text-center">Cars List</h2>
       <div class="d-flex justify-content-end mb-3">
-        <button class="btn btn-sm btn-primary me-2" mdRipple routerLink="/admin/cars/new">
+        <button class="btn btn-sm btn-primary me-2" mdRipple (click)="newCar()">New Car</button>
+        <!-- <button class="btn btn-sm btn-primary me-2" mdRipple routerLink="/admin/cars/new">
           New Car
-        </button>
+        </button> -->
       </div>
       <table border="1" class="table table-striped">
         <thead>
@@ -28,14 +29,12 @@
             <!-- <td>{{car.model}}</td>
               <td>{{car.year}}</td> -->
             <td>
-              <button
-                class="btn btn-sm btn-primary me-2"
-                mdRipple
-                routerLink="/admin/cars/edit/{{ car.id }}"
-              >
+              <button class="btn btn-sm btn-primary me-2" mdRipple (click)="editCar(car)">
                 Edit
               </button>
-              <button class="btn btn-sm btn-danger" mdRipple (click)="deleteById(car)">Delete</button>
+              <button class="btn btn-sm btn-danger" mdRipple (click)="deleteById(car)">
+                Delete
+              </button>
             </td>
           </tr>
           }
@@ -44,3 +43,20 @@
     </div>
   </div>
 </div>
+<!-- Modal -->
+
+<ng-template #modalCarDetail>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Register</h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-mdb-ripple-init
+      data-mdb-dismiss="modal"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <app-carsdetails [car]="editedCar" (return)="returnDetail($event)"></app-carsdetails>
+  </div>
+</ng-template>

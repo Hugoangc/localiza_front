@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input, Output, EventEmitter } from '@angular/core';
 import { Car } from '../../../models/car';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-carsdetails',
   imports: [CommonModule, MdbFormsModule, FormsModule],
@@ -11,7 +12,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './carsdetails.scss',
 })
 export class Carsdetails {
-  car: Car = new Car(0, '', '');
+  @Input('car') car: Car = new Car(0, '', '');
+  @Output('return') return = new EventEmitter<any>();
   router = inject(ActivatedRoute); //parametro de rota
   router2 = inject(Router); //direcionamento
   constructor() {
@@ -22,10 +24,26 @@ export class Carsdetails {
   }
 
   findById(id: number) {
-    let newCar: Car = new Car(id, 'Sample Model', 'Sample Brand', 2022);
+    let newCar: Car = new Car(id, '', '');
     this.car = newCar;
   }
-  register() {
-    throw new Error('Method not implemented.');
+  save() {
+    if (this.car.id > 0) {
+      Swal.fire({
+        title: 'Car edited successfully!',
+        icon: 'success',
+        confirmButtonText: 'Ok',
+      });
+
+      this.router2.navigate(['/admin/cars'], { state: { editedCar: this.car } });
+    } else {
+      Swal.fire({
+        title: 'Car saved successfully!',
+        icon: 'success',
+        confirmButtonText: 'Ok',
+      });
+      this.router2.navigate(['/admin/cars'], { state: { newCar: this.car } });
+    }
+    this.return.emit(this.car);
   }
 }
