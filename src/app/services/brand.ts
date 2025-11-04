@@ -24,7 +24,7 @@ export class BrandService {
   }
 
   deleteById(id: number): Observable<string> {
-    return this.http.delete<string>(this.API + '/deleteById/' + id, {
+    return this.http.delete<string>(this.API + '/' + id, {
       responseType: 'text' as 'json',
     });
   }
@@ -34,7 +34,7 @@ export class BrandService {
   }
 
   update(brand: Brand, id: number): Observable<string> {
-    return this.http.put<string>(this.API + '/update/' + id, brand, {
+    return this.http.put<string>(this.API + '/' + id, brand, {
       responseType: 'text' as 'json',
     });
   }

@@ -11,11 +11,11 @@
             <div class="col-6">
               <div class="input-group mb-3">
                 <input
-                  (keyup)="findByNome()"
+                  (keyup)="findByName()"
                   [(ngModel)]="search"
                   type="text"
                   class="form-control"
-                  placeholder="Digite parte do nome do acessório"
+                  placeholder="Type your acessory name"
                   aria-label="Recipient's username"
                   aria-describedby="button-addon2"
                 />
@@ -24,8 +24,8 @@
             <div class="col-6">
               <div class="alinharADireita">
                 @if(!modeModal){
-                <a href="admin/acessorios/new" class="btn btn-success btn-rounded" mdbRippled>
-                  <i class="fas fa-plus fa-sm"></i> Novo
+                <a href="admin/acessories/new" class="btn btn-success btn-rounded" mdbRippled>
+                  <i class="fas fa-plus fa-sm"></i> New
                 </a>
                 }
               </div>
@@ -33,9 +33,9 @@
           </div>
 
           <ngb-pagination
-            (pageChange)="trocarPagina($event)"
-            [pageSize]="pagina.size"
-            [collectionSize]="pagina.totalElements"
+            (pageChange)="findAll()"
+            [pageSize]="page.size"
+            [collectionSize]="page.totalElements"
             [(page)]="numPage"
             [boundaryLinks]="true"
           />
@@ -43,7 +43,7 @@
           <select
             (change)="findAll()"
             class="form-control"
-            [(ngModel)]="qtidPorPagina"
+            [(ngModel)]="qtdePerPage"
             name="adkfj"
             id=""
           >
@@ -56,8 +56,8 @@
             <thead>
               <tr>
                 <th scope="col">ID</th>
-                <th scope="col">NOME</th>
-                <th scope="col">DESCRIÇÃO</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
                 <th scope="col"></th>
               </tr>
             </thead>
@@ -65,27 +65,27 @@
               @for (acessory of list; track $index) {
               <tr>
                 <td>{{ acessory.id }}</td>
-                <td>{{ acessory.nome }}</td>
-                <td>{{ acessory.descricao }}</td>
+                <td>{{ acessory.name }}</td>
+                <td>{{ acessory.description }}</td>
                 <td class="alinharADireita">
-                  @if(!modoModal){
+                  @if(!modeModal){
                   <a
-                    href="admin/acessorios/edit/{{ acessory.id }}"
+                    href="admin/acessories/edit/{{ acessory.id }}"
                     class="btn btn-primary btn-rounded"
                     mdbRippled
                   >
                     <i class="fas fa-pencil fa-sm"></i>
                   </a>
-                  <button (click)="delete(acessory)" class="btn btn-danger btn-rounded" mdbRippled>
+                  <button
+                    (click)="deleteById(acessory)"
+                    class="btn btn-danger btn-rounded"
+                    mdbRippled
+                  >
                     <i class="fas fa-trash fa-sm"></i>
                   </button>
                   }@else {
-                  <button
-                    (click)="select(acessory)"
-                    class="btn btn-success btn-rounded"
-                    mdbRippled
-                  >
-                    Selecionar
+                  <button (click)="select(acessory)" class="btn btn-success btn-rounded" mdbRippled>
+                    Select
                   </button>
                   }
                 </td>

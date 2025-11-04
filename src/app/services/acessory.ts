@@ -33,7 +33,7 @@ export class AcessoryService {
     });
   }
   update(acessory: Acessory, id: number): Observable<string> {
-    return this.http.put<string>(this.API + '/update' + id, acessory, {
+    return this.http.put<string>(this.API + '/update/' + id, acessory, {
       responseType: 'text' as 'json',
     });
   }
