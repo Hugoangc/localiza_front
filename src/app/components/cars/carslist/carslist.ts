@@ -1,42 +1,43 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild, TemplateRef } from '@angular/core';
 import { Car } from '../../../models/car';
-import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { MdbModalModule, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { Carsdetails } from '../carsdetails/carsdetails';
+import { CarService } from '../../../services/car';
+import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-carslist',
-  imports: [RouterLink, MdbModalModule, Carsdetails],
+  standalone: true,
+  imports: [FormsModule, MdbModalModule, Carsdetails],
   templateUrl: './carslist.html',
   styleUrl: './carslist.scss',
 })
 export class Carslist {
   list: Car[] = [];
-  editedCar: Car = new Car(0, '', '');
+  search: string = '';
+  editedCar!: Car;
+
+  carService = inject(CarService);
 
   //modals
+  @ViewChild('modalCarsDetails') modalCarsDetails!: TemplateRef<any>; // referencia da modal
   modalService = inject(MdbModalService); // pra abrir a modal
-  @ViewChild('modalCarDetail') modalCarDetail: any; // referencia da modal
   modalRef: any; // instancia da modal
 
   constructor() {
-    this.list.push(new Car(1, 'Corolla Hybrid', 'Toyota', 2020));
-    this.list.push(new Car(2, 'Civic Advanced Hybrid', 'Honda', 2019));
-    this.list.push(new Car(3, 'Mustang Mach-E', 'Ford', 2018));
+    this.findAll();
+  }
 
-    let newCar = history.state.newCar;
-    let editedCar = history.state.editedCar;
-
-    if (newCar) {
-      newCar.id = this.list.length + 1;
-      this.list.push(newCar);
-    }
-    if (editedCar) {
-      let i = this.list.findIndex((x) => {
-        return x.id == editedCar.id;
-      });
-      this.list[i] = editedCar;
-    }
+  findAll() {
+    this.carService.findAll().subscribe({
+      next: (list) => {
+        this.list = list;
+      },
+      error: (erro) => {
+        Swal.fire(erro.error, '', 'error');
+      },
+    });
   }
 
   deleteById(car: Car) {
@@ -48,26 +49,25 @@ export class Carslist {
       confirmButtonText: 'Ok',
     }).then((result) => {
       if (result.isConfirmed) {
-        let i = this.list.findIndex((x) => {
-          return x.id == car.id;
-        });
-        this.list.splice(i, 1);
-        Swal.fire({
-          title: 'Deleted successfully!',
-          icon: 'success',
-          showConfirmButton: true,
-          confirmButtonText: 'Ok',
+        this.carService.deleteById(car.id).subscribe({
+          next: (mensage) => {
+            Swal.fire(mensage, '', 'success');
+            this.findAll();
+          },
+          error: (err) => {
+            Swal.fire(err.error, '', 'error');
+          },
         });
       }
     });
   }
   newCar() {
     this.editedCar = new Car(0, '', '');
-    this.modalRef = this.modalService.open(this.modalCarDetail);
+    this.modalRef = this.modalService.open(this.modalCarsDetails);
   }
   editCar(car: Car) {
     this.editedCar = Object.assign({}, car); // clone pra evitar alterar o original
-    this.modalRef = this.modalService.open(this.modalCarDetail);
+    this.modalRef = this.modalService.open(this.modalCarsDetails);
     //this.modalRef.componentInstance.car = car;
   }
   returnDetail(car: Car) {

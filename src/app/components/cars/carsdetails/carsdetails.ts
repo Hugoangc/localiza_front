@@ -5,9 +5,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-carsdetails',
-  imports: [CommonModule, MdbFormsModule, FormsModule],
+  imports: [CommonModule, MdbFormsModule, FormsModule, RouterLink],
   templateUrl: './carsdetails.html',
   styleUrl: './carsdetails.scss',
 })
