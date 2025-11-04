@@ -23,7 +23,7 @@
           <tr>
             <td>{{ car.id }}</td>
             <td>{{ car.name }}</td>
-            <td>{{ car.brand }}</td>
+            <!-- <td>{{ car.brand }}</td> -->
             <td>{{ car.manufactureYear }}</td>
 
             <!-- <td>{{car.model}}</td>
@@ -52,7 +52,7 @@
       type="button"
       class="btn-close"
       data-mdb-ripple-init
-      data-mdb-dismiss="modal"
+      (click)="modalRef.close()"
       aria-label="Close"
     ></button>
   </div>

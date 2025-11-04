@@ -1,1 +1,33 @@
-<p>brandsdetails works!</p>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8 col-sm-10">
+      <div class="card mb-3">
+        <h2 class="my-3 text-center card-header">Register a new brand</h2>
+
+        <div class="card-body">
+          <mdb-form-control class="mb-3">
+            <input
+              mdbInput
+              type="text"
+              id="carName"
+              class="form-control"
+              [(ngModel)]="brand.name"
+            />
+            <label mdbLabel class="form-label" for="carName">Name</label>
+          </mdb-form-control>
+        </div>
+
+        <div class="card-footer text-center">
+          <button
+            type="button"
+            class="btn btn-primary btn-rounded w-100"
+            mdbRipple
+            (click)="save()"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

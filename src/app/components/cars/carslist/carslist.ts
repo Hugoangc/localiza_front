@@ -5,11 +5,12 @@ import { MdbModalModule, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { Carsdetails } from '../carsdetails/carsdetails';
 import { CarService } from '../../../services/car';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-carslist',
   standalone: true,
-  imports: [FormsModule, MdbModalModule, Carsdetails],
+  imports: [FormsModule, MdbModalModule, Carsdetails, CommonModule],
   templateUrl: './carslist.html',
   styleUrl: './carslist.scss',
 })
@@ -62,7 +63,7 @@ export class Carslist {
     });
   }
   newCar() {
-    this.editedCar = new Car(0, '', '', new Date().getFullYear());
+    this.editedCar = new Car();
     this.modalRef = this.modalService.open(this.modalCarsDetails);
   }
   editCar(car: Car) {

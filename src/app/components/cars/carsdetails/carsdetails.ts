@@ -14,7 +14,7 @@ import { CarService } from '../../../services/car';
   styleUrl: './carsdetails.scss',
 })
 export class Carsdetails {
-  @Input('car') car: Car = new Car(0, '', '', new Date().getFullYear());
+  @Input('car') car: Car = new Car();
   @Output('return') return = new EventEmitter<any>();
   router = inject(ActivatedRoute); //parametro de rota
   router2 = inject(Router); //direcionamento
@@ -66,7 +66,7 @@ export class Carsdetails {
         },
         error: (err) => {
           Swal.fire({
-            title: 'An error occurred while saving!',
+            title: err,
             icon: 'error',
             confirmButtonText: 'Ok',
           });
