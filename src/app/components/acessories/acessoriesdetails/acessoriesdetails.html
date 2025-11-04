@@ -1,0 +1,61 @@
+<br />
+<div class="container">
+  <div class="row">
+    <div class="col-4"></div>
+
+    <div class="col-4">
+      <div class="card">
+        <div class="card-body centralizar">
+          <h3>Acessory Register</h3>
+          <br />
+
+          <form #formulario="ngForm" (ngSubmit)="save()">
+            <mdb-form-control>
+              <input
+                mdbInput
+                type="text"
+                name="name"
+                class="form-control"
+                [(ngModel)]="acessory.name"
+              />
+              <label mdbLabel class="form-label" for="name">Acessory Name:</label>
+            </mdb-form-control>
+
+            <br />
+            <mdb-form-control>
+              <input
+                [(ngModel)]="acessory.description"
+                mdbInput
+                type="text"
+                name="description"
+                class="form-control"
+              />
+              <label mdbLabel class="form-label" for="description">Description:</label>
+            </mdb-form-control>
+            <br />
+
+            @if(acessory.id > 0){
+            <button
+              type="submit"
+              [disabled]="!formulario.valid"
+              class="btn btn-success btn-rounded"
+            >
+              <i class="fas fa-save fa-sm"></i> Update
+            </button>
+            }@else {
+            <button
+              type="submit"
+              [disabled]="!formulario.valid"
+              class="btn btn-success btn-rounded"
+            >
+              <i class="fas fa-save fa-sm"></i> Save
+            </button>
+            }
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-4"></div>
+  </div>
+</div>
