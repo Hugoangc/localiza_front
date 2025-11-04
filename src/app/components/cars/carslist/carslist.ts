@@ -62,7 +62,7 @@ export class Carslist {
     });
   }
   newCar() {
-    this.editedCar = new Car(0, '', '');
+    this.editedCar = new Car(0, '', '', new Date().getFullYear());
     this.modalRef = this.modalService.open(this.modalCarsDetails);
   }
   editCar(car: Car) {
@@ -70,16 +70,9 @@ export class Carslist {
     this.modalRef = this.modalService.open(this.modalCarsDetails);
     //this.modalRef.componentInstance.car = car;
   }
+
   returnDetail(car: Car) {
-    if (car.id > 0) {
-      let index = this.list.findIndex((x) => {
-        return x.id == car.id;
-      });
-      this.list[index] = car;
-    } else {
-      car.id = 55;
-      this.list.push(car);
-    }
+    this.findAll();
     this.modalRef.close();
   }
 }
