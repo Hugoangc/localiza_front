@@ -26,8 +26,8 @@
             <div class="col-6">
               <!-- @if(loginService.hasRole('ADMIN')){ -->
               @if(!modeModal){
-              <div class="alinharADireita">
-                <a href="admin/brand/new" class="btn btn-success btn-rounded" mdbRippled>
+              <div>
+                <a routerLink="/admin/brands/new" class="btn btn-success btn-rounded" mdbRippled>
                   <i class="fas fa-plus fa-sm"></i> New
                 </a>
               </div>
@@ -54,7 +54,7 @@
                 <td>
                   @if(!modeModal){
                   <a
-                    href="admin/brands/edit/{{ brand.id }}"
+                    [routerLink]="['/admin/brands/edit', brand.id]"
                     class="btn btn-primary btn-rounded"
                     mdbRippled
                   >

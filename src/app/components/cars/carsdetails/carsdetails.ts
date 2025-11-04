@@ -42,7 +42,7 @@ export class Carsdetails {
   save() {
     if (this.car.id > 0) {
       this.carService.update(this.car, this.car.id).subscribe({
-        next: (mensagem) => {
+        next: (mensage) => {
           Swal.fire('Updated successfully!', '', 'success');
           //this.router2.navigate(['admin/cars'], {state: editedCar: this.car});
           //this.return.emit(this.car);

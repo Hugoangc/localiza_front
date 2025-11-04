@@ -20,7 +20,7 @@ export class BrandService {
   }
 
   findById(id: number): Observable<Brand> {
-    return this.http.get<Brand>(this.API + '/findById/' + id);
+    return this.http.get<Brand>(this.API + '/' + id);
   }
 
   deleteById(id: number): Observable<string> {

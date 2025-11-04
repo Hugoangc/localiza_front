@@ -6,10 +6,10 @@ import { Brandsdetails } from '../brandsdetails/brandsdetails';
 import { BrandService } from '../../../services/brand';
 import Swal from 'sweetalert2';
 import { Brand } from '../../../models/brand';
-
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-brandslist',
-  imports: [FormsModule, MdbModalModule, Brandsdetails, CommonModule],
+  imports: [FormsModule, MdbModalModule, Brandsdetails, CommonModule, RouterLink],
   templateUrl: './brandslist.html',
   styleUrl: './brandslist.scss',
 })
