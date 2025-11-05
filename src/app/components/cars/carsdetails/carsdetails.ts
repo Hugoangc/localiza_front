@@ -1,4 +1,12 @@
-import { Component, inject, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  Output,
+  EventEmitter,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { Car } from '../../../models/car';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,21 +14,28 @@ import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { CarService } from '../../../services/car';
+import { Brand } from '../../../models/brand';
+import { MdbModalService } from 'mdb-angular-ui-kit/modal';
+import { Brandslist } from '../../brands/brandslist/brandslist';
 @Component({
   selector: 'app-carsdetails',
   standalone: true,
-  imports: [CommonModule, MdbFormsModule, FormsModule],
+  imports: [CommonModule, MdbFormsModule, FormsModule, Brandslist],
   templateUrl: './carsdetails.html',
   styleUrl: './carsdetails.scss',
 })
 export class Carsdetails {
-  @Input('car') car: Car = new Car();
+  @Input('car') car!: Car;
   @Output('return') return = new EventEmitter<any>();
   router = inject(ActivatedRoute); //parametro de rota
   router2 = inject(Router); //direcionamento
 
   carService = inject(CarService);
 
+  //modals
+  @ViewChild('modalBrands') modalBrands!: TemplateRef<any>; // referencia da modal
+  modalService = inject(MdbModalService); // pra abrir a modal
+  modalRef: any; // instancia da modal
   constructor() {
     const id = this.router.snapshot.params['id'];
     if (id > 0) {
@@ -40,8 +55,18 @@ export class Carsdetails {
   }
 
   save() {
+    if (!this.car.brand || !this.car.brand.id) {
+      Swal.fire('Erro', 'Select a Brand.', 'error');
+      return;
+    }
+    const carPayload: any = {
+      ...this.car,
+      brand: {
+        id: this.car.brand.id,
+      },
+    };
     if (this.car.id > 0) {
-      this.carService.update(this.car, this.car.id).subscribe({
+      this.carService.update(carPayload, this.car.id).subscribe({
         next: (mensage) => {
           Swal.fire('Updated successfully!', '', 'success');
           //this.router2.navigate(['admin/cars'], {state: editedCar: this.car});
@@ -57,7 +82,7 @@ export class Carsdetails {
         },
       });
     } else {
-      this.carService.save(this.car).subscribe({
+      this.carService.save(carPayload).subscribe({
         next: () => {
           Swal.fire('Saved successfully!', '', 'success');
           //this.router2.navigate(['admin/cars'], {state: newCar: this.car});
@@ -73,5 +98,12 @@ export class Carsdetails {
         },
       });
     }
+  }
+  searchBrand() {
+    this.modalRef = this.modalService.open(this.modalBrands, { modalClass: 'modal-lg' });
+  }
+  brandReturn(brand: Brand) {
+    this.car.brand = brand;
+    this.modalRef.close();
   }
 }

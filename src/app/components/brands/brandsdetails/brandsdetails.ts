@@ -24,13 +24,13 @@ export class Brandsdetails {
   brandService = inject(BrandService);
 
   constructor() {
-    const idString = this.activeRoute.snapshot.params['id'];
-    if (idString) {
-      const idNumber = +idString;
-      if (idNumber > 0) {
-        this.findById(idNumber);
-      }
-    }
+    // const idString = this.activeRoute.snapshot.params['id'];
+    // if (idString) {
+    //   const idNumber = +idString;
+    //   if (idNumber > 0) {
+    //     this.findById(idNumber);
+    //   }
+    // }
   }
 
   findById(id: number) {
@@ -48,7 +48,8 @@ export class Brandsdetails {
       this.brandService.update(this.brand, this.brand.id).subscribe({
         next: (mensage) => {
           Swal.fire('Updated successfully!', '', 'success');
-          this.router.navigate(['admin/brands']);
+          //this.router.navigate(['admin/brands']);
+          this.return.emit('OK');
         },
         error: (err) => {
           this.showError(err, 'Error: updating');
@@ -58,7 +59,8 @@ export class Brandsdetails {
       this.brandService.save(this.brand).subscribe({
         next: (mensage) => {
           Swal.fire('Saved successfully!', '', 'success');
-          this.router.navigate(['admin/brands']);
+          //this.router.navigate(['admin/brands']);
+          this.return.emit('OK');
         },
         error: (err) => {
           this.showError(err, 'Error: saving');

@@ -13,6 +13,8 @@
           <tr>
             <th scope="col">ID</th>
             <th scope="col">Model</th>
+            <th scope="col">Color</th>
+            <th scope="col">Price</th>
             <th scope="col">Brand</th>
             <th scope="col">Year</th>
             <th scope="col">Actions</th>
@@ -23,7 +25,13 @@
           <tr>
             <td>{{ car.id }}</td>
             <td>{{ car.name }}</td>
-            <td>{{ car.brand.name }}</td>
+            <td>{{ car.color }}</td>
+            @if(car.price == null){
+            <td>No Info.</td>
+            } @else{
+            <td><a>$</a>{{ car.price }}</td>
+            }
+            <td>{{ car.brand?.name }}</td>
             <td>{{ car.manufactureYear }}</td>
 
             <!-- <td>{{car.model}}</td>

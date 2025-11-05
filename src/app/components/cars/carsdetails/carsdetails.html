@@ -9,18 +9,22 @@
             <input mdbInput type="text" id="carName" class="form-control" [(ngModel)]="car.name" />
             <label mdbLabel class="form-label" for="carName">Name</label>
           </mdb-form-control>
+          <br />
 
+          <mdb-form-control class="mb-3">
+            <input mdbInput type="text" id="carYear" class="form-control" [(ngModel)]="car.color" />
+            <label mdbLabel class="form-label" for="carColor">Color</label>
+          </mdb-form-control>
           <mdb-form-control class="mb-3">
             <input
               mdbInput
-              type="text"
-              id="carBrand"
+              type="number"
+              id="carYear"
               class="form-control"
-              [(ngModel)]="car.brand.name"
+              [(ngModel)]="car.price"
             />
-            <label mdbLabel class="form-label" for="carBrand">Brand</label>
+            <label mdbLabel class="form-label" for="carPrice">Price</label>
           </mdb-form-control>
-
           <mdb-form-control class="mb-3">
             <input
               mdbInput
@@ -31,6 +35,39 @@
             />
             <label mdbLabel class="form-label" for="carYear">Year</label>
           </mdb-form-control>
+          <br />
+          <div>
+            @if(car.brand == null){
+            <button
+              type="button"
+              class="btn btn-primary btn-rounded w-100"
+              mdbRipple
+              (click)="searchBrand()"
+            >
+              Search Brand</button
+            >}@else {
+            <span class="text-primary">Brand: {{ car.brand?.name }}</span>
+            <button
+              type="button"
+              class="btn btn-warning btn-rounded w-100"
+              mdbRipple
+              (click)="searchBrand()"
+            >
+              Change Brand
+            </button>
+            }
+          </div>
+
+          <!-- <mdb-form-control class="mb-3">
+            <input
+              mdbInput
+              type="text"
+              id="carBrand"
+              class="form-control"
+              [(ngModel)]="car.brand.name"
+            />
+            <label mdbLabel class="form-label" for="carBrand">Brand</label>
+          </mdb-form-control> -->
         </div>
 
         <div class="card-footer text-center">
@@ -47,3 +84,19 @@
     </div>
   </div>
 </div>
+
+<ng-template #modalBrands>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Register</h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-mdb-ripple-init
+      (click)="modalRef.close()"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <app-brandslist [hiddenButtons]="true" (return)="brandReturn($event)"></app-brandslist>
+  </div>
+</ng-template>

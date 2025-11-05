@@ -1,7 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  Output,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MdbModalModule } from 'mdb-angular-ui-kit/modal';
+import { MdbModalModule, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { Brandsdetails } from '../brandsdetails/brandsdetails';
 import { BrandService } from '../../../services/brand';
 import Swal from 'sweetalert2';
@@ -9,16 +17,24 @@ import { Brand } from '../../../models/brand';
 import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-brandslist',
-  imports: [FormsModule, MdbModalModule, Brandsdetails, CommonModule, RouterLink],
+  standalone: true,
+  imports: [FormsModule, MdbModalModule, CommonModule, RouterLink, Brandsdetails],
   templateUrl: './brandslist.html',
   styleUrl: './brandslist.scss',
 })
 export class Brandslist {
   list: Brand[] = [];
   search: string = '';
+  editedBrand!: Brand;
 
+  //modals
+  @ViewChild('modalBrands') modalBrands!: TemplateRef<any>; // referencia da modal
+  modalService = inject(MdbModalService); // pra abrir a modal
+  modalRef: any; // instancia da modal
+
+  @Input('hiddenButtons') hiddenButtons: boolean = false;
   @Input('modeModal') modeModal: boolean = false;
-  @Output('myEvent') myEvent = new EventEmitter();
+  @Output('return') myEvent = new EventEmitter();
 
   BrandService = inject(BrandService);
   loginService = inject(BrandService);
@@ -68,9 +84,20 @@ export class Brandslist {
       },
     });
   }
+
+  newBrand() {
+    this.editedBrand = new Brand();
+    this.modalRef = this.modalService.open(this.modalBrands);
+  }
+  returnDetail(event: any) {
+    this.findAll();
+    this.modalRef.close();
+  }
   selectedBrand(brand: Brand) {
-    if (this.modeModal) {
-      this.myEvent.emit(brand);
-    }
+    this.myEvent.emit(brand);
+  }
+  editBrand(brand: Brand) {
+    this.editedBrand = Object.assign({}, brand); // clone pra evitar alterar o original
+    this.modalRef = this.modalService.open(this.modalBrands);
   }
 }

@@ -42,7 +42,7 @@
                 <th scope="col">Id</th>
                 <th scope="col">Name</th>
                 <th scope="col">Description</th>
-                <th scope="col"></th>
+                <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -51,28 +51,23 @@
                 <td>{{ brand.id }}</td>
                 <td>{{ brand.name }}</td>
                 <td>{{ brand.description }}</td>
-                <td>
-                  @if(!modeModal){
-                  <a
-                    [routerLink]="['/admin/brands/edit', brand.id]"
-                    class="btn btn-primary btn-rounded"
-                    mdbRippled
-                  >
-                    <i class="fas fa-pencil fa-sm"></i>
-                  </a>
-                  <button (click)="deleteById(brand)" class="btn btn-danger btn-rounded" mdbRippled>
-                    <i class="fas fa-trash fa-sm"></i>
-                  </button>
-                  }@else{
-                  <button
-                    (click)="selectedBrand(brand)"
-                    class="btn btn-success btn-rounded"
-                    mdbRippled
-                  >
-                    Selecionar
-                  </button>
-                  }
-                </td>
+                @if(hiddenButtons){
+                <button
+                  class="btn btn-sm btn-primary me-2"
+                  mdbRipple
+                  (click)="selectedBrand(brand)"
+                >
+                  Select
+                </button>
+                }@else {
+
+                <button class="btn btn-sm btn-warning me-2" mdRipple (click)="editBrand(brand)">
+                  Edit
+                </button>
+                <button class="btn btn-sm btn-danger" mdRipple (click)="deleteById(brand)">
+                  Delete
+                </button>
+                }
               </tr>
               }
             </tbody>
