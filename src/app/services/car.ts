@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Car } from '../models/car';
@@ -31,5 +31,10 @@ export class CarService {
   }
   findById(id: number): Observable<Car> {
     return this.http.get<Car>(this.API + '/' + id);
+  }
+
+  findNames(name: string): Observable<Car[]> {
+    let params = new HttpParams().set('name', name);
+    return this.http.get<Car[]>(this.API + '/findNames', { params: params });
   }
 }

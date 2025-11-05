@@ -27,7 +27,7 @@ export class Acessorieslist {
   list: Acessory[] = [];
   page: Page = new Page();
   numPage: number = 1;
-  qtdePerPage: number = 5;
+  qtdePerPage: number = 100;
 
   search: string = '';
 

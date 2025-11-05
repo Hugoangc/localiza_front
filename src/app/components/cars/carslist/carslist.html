@@ -6,6 +6,17 @@
       <div class="d-flex justify-content-end mb-3">
         <button class="btn btn-sm btn-primary me-2" mdRipple (click)="newCar()">New Car</button>
       </div>
+      <div class="input-group mb-2">
+        <input
+          (keyup)="findNames()"
+          [(ngModel)]="search"
+          type="text"
+          class="form-control"
+          placeholder="Type the car name to search"
+          aria-label="Recipient's username"
+          aria-describedby="button-addon2"
+        />
+      </div>
       <!-- <button class="btn btn-sm btn-primary me-2" mdRipple routerLink="/admin/cars/new">
           New Car
         </button> -->

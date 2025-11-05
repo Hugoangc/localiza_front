@@ -77,4 +77,32 @@ export class Carslist {
     this.findAll();
     this.modalRef.close();
   }
+
+  findNames() {
+    if (!this.search || this.search.trim() === '') {
+      this.findAll();
+      return;
+    }
+
+    this.carService.findNames(this.search).subscribe({
+      next: (list) => {
+        this.list = list;
+      },
+      error: (erro) => {
+        console.error('Debug:', erro);
+
+        let errorMessage = 'cant load the list';
+
+        if (erro.status === 0) {
+          errorMessage = 'network error.';
+        } else if (erro.error && typeof erro.error === 'string') {
+          errorMessage = erro.error;
+        } else if (erro.error && erro.error.message) {
+          errorMessage = erro.error.message;
+        }
+
+        Swal.fire('Erro!', errorMessage, 'error');
+      },
+    });
+  }
 }
