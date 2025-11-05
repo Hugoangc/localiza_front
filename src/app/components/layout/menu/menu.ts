@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MdbCollapseModule } from 'mdb-angular-ui-kit/collapse';
+import { LoginService } from '../../../auth/login.service';
 
 @Component({
   selector: 'app-menu',
@@ -7,4 +8,9 @@ import { MdbCollapseModule } from 'mdb-angular-ui-kit/collapse';
   templateUrl: './menu.html',
   styleUrl: './menu.scss',
 })
-export class Menu {}
+export class Menu {
+  loginService = inject(LoginService);
+  logout() {
+    this.loginService.logout();
+  }
+}

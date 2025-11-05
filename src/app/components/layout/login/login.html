@@ -6,7 +6,13 @@
       <div class="card">
         <div class="card-body">
           <mdb-form-control>
-            <input mdbInput type="text" id="user" class="form-control" [(ngModel)]="user" />
+            <input
+              mdbInput
+              type="text"
+              id="user"
+              class="form-control"
+              [(ngModel)]="login.username"
+            />
             <label mdbLabel class="form-label" for="form1">User</label>
           </mdb-form-control>
           <br />
@@ -16,7 +22,7 @@
               type="password"
               id="password"
               class="form-control"
-              [(ngModel)]="password"
+              [(ngModel)]="login.password"
             />
             <label mdbLabel class="form-label" for="form1">Password</label>
           </mdb-form-control>
@@ -26,7 +32,7 @@
             type="button"
             class="btn btn-primary btn-rounded w-100"
             mdbRipple
-            (click)="login()"
+            (click)="logar()"
           >
             Acessar
           </button>
