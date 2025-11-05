@@ -9,7 +9,7 @@ import { Page } from '../models/page';
 })
 export class AcessoryService {
   http = inject(HttpClient);
-  API = 'http://localhost:3000/api/acessories';
+  API = 'http://localhost:8080/api/acessory';
   constructor() {}
 
   findAll(numPage: number, qtdePerPage: number): Observable<Page> {

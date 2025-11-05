@@ -68,6 +68,7 @@ export class Carsdetails {
       brand: {
         id: this.car.brand.id,
       },
+      acessories: this.car.acessories.map((acessory) => ({ id: acessory.id })),
     };
     if (this.car.id > 0) {
       this.carService.update(carPayload, this.car.id).subscribe({

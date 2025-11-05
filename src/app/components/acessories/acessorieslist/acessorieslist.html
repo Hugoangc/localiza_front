@@ -77,3 +77,14 @@
     </div>
   </div>
 </div>
+
+<ng-template #modalAcessoriesDetails>
+  <div class="modal-header">
+    <h5 class="modal-title">Criar/Editar Acessório</h5>
+    <button type="button" class="btn-close" (click)="modalRef.close()" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <app-acessoriesdetails [acessory]="editedAcessory" (return)="returnDetail($event)">
+    </app-acessoriesdetails>
+  </div>
+</ng-template>
