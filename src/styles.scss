@@ -8,3 +8,7 @@ body {
     sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   background-color: #e6eaed;
 }
+
+.swal2-container {
+  z-index: 20000 !important;
+}

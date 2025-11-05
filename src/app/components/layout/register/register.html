@@ -1,0 +1,52 @@
+<form #form="ngForm" (ngSubmit)="onSubmit()">
+  <h4 class="text-center mb-3">Criar nova conta</h4>
+
+  <mdb-form-control class="mb-3">
+    <input
+      mdbInput
+      type="text"
+      id="reg_username"
+      name="username"
+      class="form-control mb-3"
+      [(ngModel)]="loginData.username"
+      required
+      #username="ngModel"
+    />
+    <label mdbLabel class="form-label" for="reg_username">Novo Usuário</label>
+    @if(username.invalid && (username.dirty || username.touched)){
+    <div class="text-danger">Usuário é obrigatório.</div>
+    }
+  </mdb-form-control>
+
+  <mdb-form-control class="mb-3">
+    <input
+      mdbInput
+      type="password"
+      id="reg_password"
+      name="password"
+      class="form-control mb-3"
+      [(ngModel)]="loginData.password"
+      required
+      #password="ngModel"
+    />
+    <label mdbLabel class="form-label" for="reg_password">Senha</label>
+    @if(password.invalid && (password.dirty || password.touched)){
+    <div class="text-danger">Senha é obrigatória.</div>
+    }
+  </mdb-form-control>
+
+  <mdb-form-control class="mb-3">
+    <input
+      mdbInput
+      type="password"
+      id="reg_confirm"
+      name="confirmPassword"
+      class="form-control mb-3"
+      [(ngModel)]="confirmPassword"
+      required
+    />
+    <label mdbLabel class="form-label" for="reg_confirm">Confirmar Senha</label>
+  </mdb-form-control>
+
+  <button type="submit" class="btn btn-primary w-100" [disabled]="!form.valid">Registrar</button>
+</form>

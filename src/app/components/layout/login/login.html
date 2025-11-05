@@ -36,8 +36,25 @@
           >
             Acessar
           </button>
+          <hr />
+          <div class="text-center">
+            <p>Não tem uma conta?</p>
+            <button class="btn btn-outline-success btn-rounded" (click)="openRegisterModal()">
+              Registrar-se
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<ng-template #modalRegister>
+  <div class="modal-header">
+    <h5 class="modal-title">Novo Usuário</h5>
+    <button type="button" class="btn-close" (click)="modalRef.close()" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <app-register-form (return)="returnDetail($event)"></app-register-form>
+  </div>
+</ng-template>

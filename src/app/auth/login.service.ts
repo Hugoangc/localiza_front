@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
@@ -11,12 +11,18 @@ import { Router } from '@angular/router';
 export class LoginService {
   http = inject(HttpClient);
   API = 'http://localhost:8080/api/login';
+  AUTH_API = 'http://localhost:8080/api/auth';
+  ADMIN_API = 'http://localhost:8080/api/admin';
   router = inject(Router);
 
   constructor() {}
 
   logar(login: Login): Observable<string> {
     return this.http.post<string>(this.API, login, { responseType: 'text' as 'json' });
+  }
+
+  register(login: Login): Observable<Usuario> {
+    return this.http.post<Usuario>('http://localhost:8080/api/auth/register', login);
   }
 
   addToken(token: string) {
@@ -51,5 +57,12 @@ export class LoginService {
 
   getUsuarioLogado() {
     return this.jwtDecode() as Usuario;
+  }
+
+  updateUserRole(userId: number, newRole: string): Observable<Usuario> {
+    // A requisição PUT deve incluir o ID na rota e a nova role como parâmetro de consulta.
+    let params = new HttpParams().set('role', newRole);
+
+    return this.http.put<Usuario>(`${this.ADMIN_API}/role/${userId}`, {}, { params: params });
   }
 }

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './components/layout/login/login';
+import { RegisterFormComponent } from './components/layout/register/register';
 import { Principal } from './components/layout/principal/principal';
 import { Carslist } from './components/cars/carslist/carslist';
 import { Carsdetails } from './components/cars/carsdetails/carsdetails';
@@ -12,6 +13,7 @@ import { loginGuard } from './auth/login-guard';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterFormComponent },
   {
     path: 'admin',
     component: Principal,
