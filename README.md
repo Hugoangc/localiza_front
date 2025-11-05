@@ -1,59 +1,55 @@
-# Form
+# Interface de Gerenciamento de Frotas (Angular Frontend)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.8.
+Este é o repositório do frontend para a aplicação de gerenciamento de frotas. Esta é uma Single Page Application (SPA) construída com **Angular 17+** (usando componentes Standalone) e estilizada com MDBootstrap e NG-Bootstrap.
 
-## Development server
+Este projeto foi projetado para consumir o [Backend Spring Boot de Gerenciamento de Frotas](https://github.com/Hugoangc/localiza) 
 
-To start a local development server, run:
+##  Funcionalidades Principais
 
-```bash
-ng serve
-```
+* **Autenticação JWT:** Rota de login dedicada que consome o endpoint `/api/login` e armazena o token JWT no `localStorage`.
+* **Guarda de Rotas (`loginGuard`):** Utiliza um `CanActivateFn` (Guarda de Rota) para proteger o endpoint `/admin` e todos os seus filhos.
+* **Interceptor HTTP (`http-interceptor`):** Anexa automaticamente o token (`Authorization: Bearer ...`) a todas as requisições HTTP, exceto para o login.
+* **Interface CRUD com Modais:** Todos os CRUDs (Carros, Marcas, Acessórios) são gerenciados em uma única página. As listas (`carslist`, `brandslist`, `acessorieslist`) abrem os componentes de detalhes (`carsdetails`, `brandsdetails`, `acessoriesdetails`) dentro de um modal MDBootstrap para criar ou editar registros.
+* **Seleção de Relacionamento (Modal-em-Modal):** O formulário `carsdetails` (para criar/editar um carro) abre seus próprios modais para carregar as *listas* de marcas e acessórios, permitindo que o usuário "selecione" um relacionamento.
+* **Vinculação/Desvinculação (Linking/Unlinking):** O formulário de carro permite adicionar e remover acessórios (desvincular) da lista antes de salvar.
+* **Busca "As-you-type":** As barras de busca nas listas disparam eventos `(keyup)` para filtrar os resultados em tempo real.
+* **Paginação:** A lista de acessórios (`acessorieslist`) usa `ngb-pagination` para paginar os resultados do backend.
+* **Renderização Condicional (RBAC):** A interface do usuário se adapta com base nas permissões do usuário, como esconder a aba "Acessories" se o usuário não for `ADMIN`.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Tecnologias Utilizadas (Frontend)
 
-## Code scaffolding
+* **Angular 17+** (Componentes Standalone)
+* **TypeScript**
+* **MDBootstrap para Angular:** Componentes de UI (Modais, Formulários, Botões).
+* **NG-Bootstrap:** Usado especificamente para o componente de Paginação.
+* **SweetAlert2:** Para notificações de sucesso e erro fáceis de usar.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Contexto (Conexão com o Backend)
 
-```bash
-ng generate component component-name
-```
+Este frontend não funciona sozinho. Ele foi construído para se comunicar com a API Spring Boot em `http://localhost:8080`.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+* **Serviços:** Cada entidade (Car, Brand, Acessory) tem seu próprio `Service` Angular (`CarService`, `BrandService`, `AcessoryService`) que usa `HttpClient` para fazer as chamadas de API.
+* **Autenticação:** O `login.service.ts` gerencia o ciclo de vida do token.
+* **Tratamento de Erros:** O `meuhttpInterceptor` centraliza o tratamento de erros HTTP, como `401` (Não Autorizado) e `403` (Proibido), redirecionando o usuário para o login caso seu token expire ou seja inválido.
 
-```bash
-ng generate --help
-```
+##  Como Rodar
 
-## Building
+    npm install
 
-To build the project run:
+    ng s
 
-```bash
-ng build
-```
+##  Estrutura dos Componentes
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+* **`app/auth`:** Contém a lógica de autenticação (serviço, guardião, interceptor) e os modelos de dados (`Login`, `Usuario`).
+* **`app/components/layout`:**
+    * **`LoginComponent`:** A tela de login.
+    * **`PrincipalComponent`:** O layout principal da aplicação (pós-login) que contém o menu e o `<router-outlet>`.
+* **`app/components/cars`:**
+    * **`CarslistComponent`:** Exibe a lista de carros e abre o modal de detalhes.
+    * **`CarsdetailsComponent`:** O formulário (dentro do modal) para criar/editar um carro. Este componente também abre outros modais para selecionar marcas e acessórios.
+* **`app/components/brands`:**
+    * **`BrandslistComponent`:** Exibe a lista de marcas. Usado tanto como uma página quanto como um "seletor" dentro do modal de carros.
+    * **`BrandsdetailsComponent`:** O formulário (dentro do modal) para criar/editar uma marca.
+* **`app/components/acessories`:**
+    * **`AcessorieslistComponent`:** Exibe a lista paginada de acessórios. Usado como página e como "seletor".
+    * **`AcessoriesdetailsComponent`:** O formulário (dentro do modal) para criar/editar um acessório.
