@@ -1,3 +1,4 @@
+import { Acessory } from './acessory';
 import { Brand } from './brand';
 
 export class Car {
@@ -8,6 +9,7 @@ export class Car {
   brand!: Brand;
   manufactureYear!: number;
   carStatus: boolean = true;
+  acessories: Acessory[] = [];
   constructor() {}
 
   // constructor(id: number, name: string, manufactureYear: number, brand: Brand) {

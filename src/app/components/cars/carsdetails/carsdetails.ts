@@ -17,10 +17,12 @@ import { CarService } from '../../../services/car';
 import { Brand } from '../../../models/brand';
 import { MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { Brandslist } from '../../brands/brandslist/brandslist';
+import { Acessorieslist } from '../../acessories/acessorieslist/acessorieslist';
+import { Acessory } from '../../../models/acessory';
 @Component({
   selector: 'app-carsdetails',
   standalone: true,
-  imports: [CommonModule, MdbFormsModule, FormsModule, Brandslist],
+  imports: [CommonModule, MdbFormsModule, FormsModule, Brandslist, Acessorieslist],
   templateUrl: './carsdetails.html',
   styleUrl: './carsdetails.scss',
 })
@@ -33,6 +35,8 @@ export class Carsdetails {
   carService = inject(CarService);
 
   //modals
+  @ViewChild('modalAcessories') modalAcessories!: TemplateRef<any>; // referencia da modal
+
   @ViewChild('modalBrands') modalBrands!: TemplateRef<any>; // referencia da modal
   modalService = inject(MdbModalService); // pra abrir a modal
   modalRef: any; // instancia da modal
@@ -105,5 +109,21 @@ export class Carsdetails {
   brandReturn(brand: Brand) {
     this.car.brand = brand;
     this.modalRef.close();
+  }
+
+  searchAcessory() {
+    this.modalRef = this.modalService.open(this.modalAcessories, { modalClass: 'modal-lg' });
+  }
+  acessoryReturn(acessory: Acessory) {
+    if (this.car.acessories == null) this.car.acessories = [];
+
+    this.car.acessories.push(acessory);
+    this.modalRef.close();
+  }
+  unlinkAccessory(acessory: Acessory) {
+    let index = this.car.acessories.findIndex((x) => {
+      return x.id == acessory.id;
+    });
+    this.car.acessories.splice(index, 1);
   }
 }

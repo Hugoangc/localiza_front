@@ -15,10 +15,11 @@ import { BrandService } from '../../../services/brand';
 import Swal from 'sweetalert2';
 import { Brand } from '../../../models/brand';
 import { RouterLink } from '@angular/router';
+import { Carsdetails } from '../../cars/carsdetails/carsdetails';
 @Component({
   selector: 'app-brandslist',
   standalone: true,
-  imports: [FormsModule, MdbModalModule, CommonModule, RouterLink, Brandsdetails],
+  imports: [FormsModule, MdbModalModule, CommonModule, Brandsdetails],
   templateUrl: './brandslist.html',
   styleUrl: './brandslist.scss',
 })
@@ -28,12 +29,14 @@ export class Brandslist {
   editedBrand!: Brand;
 
   //modals
+
   @ViewChild('modalBrands') modalBrands!: TemplateRef<any>; // referencia da modal
   modalService = inject(MdbModalService); // pra abrir a modal
   modalRef: any; // instancia da modal
 
-  @Input('hiddenButtons') hiddenButtons: boolean = false;
   @Input('modeModal') modeModal: boolean = false;
+  @Input('hiddenButtons') hiddenButtons: boolean = false;
+
   @Output('return') myEvent = new EventEmitter();
 
   BrandService = inject(BrandService);

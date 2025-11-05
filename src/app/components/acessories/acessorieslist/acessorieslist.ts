@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { AcessoryService } from '../../../services/acessory';
-import { MdbModalModule } from 'mdb-angular-ui-kit/modal';
+import { MdbModalModule, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { Acessory } from '../../../models/acessory';
@@ -31,9 +31,15 @@ export class Acessorieslist {
 
   search: string = '';
 
+  editedAcessory!: Acessory;
+  @ViewChild('modalAcessoriesDetails') modalAcessoriesDetails!: TemplateRef<any>;
+  modalService = inject(MdbModalService);
+  modalRef: any;
+
   //@ViewChild('modalAcessoriesDetails') modalAcessoriesDetails!: TemplateRef<any>; // referencia da modal
   @Input('modeModal') modeModal: boolean = false;
-  @Output('myEvent') myEvent = new EventEmitter();
+  @Input('hiddenButtons') hiddenButtons: boolean = false;
+  @Output('return') myEvent = new EventEmitter();
 
   acessoryService = inject(AcessoryService);
   constructor() {
@@ -47,7 +53,19 @@ export class Acessorieslist {
         this.page = page;
       },
       error: (erro) => {
-        Swal.fire(erro.error, '', 'error');
+        console.error('Debug:', erro);
+
+        let errorMessage = 'cant load the list';
+
+        if (erro.status === 0) {
+          errorMessage = 'network error.';
+        } else if (erro.error && typeof erro.error === 'string') {
+          errorMessage = erro.error;
+        } else if (erro.error && erro.error.message) {
+          errorMessage = erro.error.message;
+        }
+
+        Swal.fire('Erro!', errorMessage, 'error');
       },
     });
   }
@@ -66,7 +84,19 @@ export class Acessorieslist {
             this.findAll();
           },
           error: (erro) => {
-            Swal.fire(erro.error, '', 'error');
+            console.error('Debug:', erro);
+
+            let errorMessage = 'cant load the list';
+
+            if (erro.status === 0) {
+              errorMessage = 'network error.';
+            } else if (erro.error && typeof erro.error === 'string') {
+              errorMessage = erro.error;
+            } else if (erro.error && erro.error.message) {
+              errorMessage = erro.error.message;
+            }
+
+            Swal.fire('Erro!', errorMessage, 'error');
           },
         });
       }
@@ -79,7 +109,19 @@ export class Acessorieslist {
         this.list = list;
       },
       error: (erro) => {
-        Swal.fire(erro.error, '', 'error');
+        console.error('Debug:', erro);
+
+        let errorMessage = 'cant load the list';
+
+        if (erro.status === 0) {
+          errorMessage = 'network error.';
+        } else if (erro.error && typeof erro.error === 'string') {
+          errorMessage = erro.error;
+        } else if (erro.error && erro.error.message) {
+          errorMessage = erro.error.message;
+        }
+
+        Swal.fire('Erro!', errorMessage, 'error');
       },
     });
   }
@@ -92,4 +134,18 @@ export class Acessorieslist {
   //   this.numPage = clickedPage;
   //   this.findAll();
   // }
+  newAcessory() {
+    this.editedAcessory = new Acessory();
+    this.modalRef = this.modalService.open(this.modalAcessoriesDetails);
+  }
+
+  editAcessory(acessory: Acessory) {
+    this.editedAcessory = Object.assign({}, acessory);
+    this.modalRef = this.modalService.open(this.modalAcessoriesDetails);
+  }
+
+  returnDetail(event: any) {
+    this.findAll();
+    this.modalRef.close();
+  }
 }

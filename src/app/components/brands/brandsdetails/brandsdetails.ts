@@ -22,7 +22,7 @@ export class Brandsdetails {
   activeRoute = inject(ActivatedRoute); //parametro de rota
   router = inject(Router); //direcionamento
   brandService = inject(BrandService);
-
+  
   constructor() {
     // const idString = this.activeRoute.snapshot.params['id'];
     // if (idString) {

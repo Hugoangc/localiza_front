@@ -38,6 +38,7 @@
           <br />
           <div>
             @if(car.brand == null){
+
             <button
               type="button"
               class="btn btn-primary btn-rounded w-100"
@@ -46,7 +47,7 @@
             >
               Search Brand</button
             >}@else {
-            <span class="text-primary">Brand: {{ car.brand?.name }}</span>
+            <p class="text-primary alert-primary">Brand: {{ car.brand?.name }}</p>
             <button
               type="button"
               class="btn btn-warning btn-rounded w-100"
@@ -57,7 +58,46 @@
             </button>
             }
           </div>
+          <br />
+          <div>
+            <button
+              type="button"
+              class="btn btn-primary btn-rounded w-100"
+              mdbRipple
+              (click)="searchAcessory()"
+            >
+              Search Acessory
+            </button>
+            <br />
 
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Id</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (acessory of car.acessories; track $index) {
+                <tr>
+                  <td>{{ acessory.id }}</td>
+                  <td>{{ acessory.name }}</td>
+                  <td>{{ acessory.description }}</td>
+
+                  <button
+                    class="btn btn-sm btn-danger"
+                    mdRipple
+                    (click)="unlinkAccessory(acessory)"
+                  >
+                    Delete
+                  </button>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
           <!-- <mdb-form-control class="mb-3">
             <input
               mdbInput
@@ -87,7 +127,7 @@
 
 <ng-template #modalBrands>
   <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Register</h5>
+    <h5 class="modal-title" id="brandslist">Brands</h5>
     <button
       type="button"
       class="btn-close"
@@ -98,5 +138,24 @@
   </div>
   <div class="modal-body">
     <app-brandslist [hiddenButtons]="true" (return)="brandReturn($event)"></app-brandslist>
+  </div>
+</ng-template>
+
+<ng-template #modalAcessories>
+  <div class="modal-header">
+    <h5 class="modal-title" id="acessorieslist">Acessories</h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-mdb-ripple-init
+      (click)="modalRef.close()"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <app-acessorieslist
+      [hiddenButtons]="true"
+      (return)="acessoryReturn($event)"
+    ></app-acessorieslist>
   </div>
 </ng-template>

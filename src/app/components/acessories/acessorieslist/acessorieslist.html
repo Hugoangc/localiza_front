@@ -4,8 +4,10 @@
     <div class="col-12 azul">
       <div class="card">
         <div class="card-body">
-          <h3><i class="fas fa-archive fa-sm"></i> Acessory Register</h3>
+          @if(!modeModal){
+          <h3><i class="fas fa-circle-notch fa-sm"></i> Acessory Register</h3>
           <br />
+          }
 
           <div class="row">
             <div class="col-6">
@@ -15,50 +17,32 @@
                   [(ngModel)]="search"
                   type="text"
                   class="form-control"
-                  placeholder="Type your acessory name"
+                  placeholder="Type the brand name to search"
                   aria-label="Recipient's username"
                   aria-describedby="button-addon2"
                 />
               </div>
             </div>
             <div class="col-6">
-              <div class="alinharADireita">
-                @if(!modeModal){
-                <a href="admin/acessories/new" class="btn btn-success btn-rounded" mdbRippled>
-                  <i class="fas fa-plus fa-sm"></i> New
-                </a>
-                }
+              <!-- @if(loginService.hasRole('ADMIN')){ -->
+              @if(!modeModal){
+              <div>
+                <button class="btn btn-success btn-rounded" mdRipple (click)="newAcessory()">
+                  <i class="fas fa-plus fa-sm"></i> New Acessory
+                </button>
               </div>
+              }
+              <!-- } -->
             </div>
           </div>
-
-          <ngb-pagination
-            (pageChange)="findAll()"
-            [pageSize]="page.size"
-            [collectionSize]="page.totalElements"
-            [(page)]="numPage"
-            [boundaryLinks]="true"
-          />
-
-          <select
-            (change)="findAll()"
-            class="form-control"
-            [(ngModel)]="qtdePerPage"
-            name="adkfj"
-            id=""
-          >
-            <option [ngValue]="5">5</option>
-            <option [ngValue]="10">10</option>
-            <option [ngValue]="1000">1000</option>
-          </select>
 
           <table class="table table-striped">
             <thead>
               <tr>
-                <th scope="col">ID</th>
+                <th scope="col">Id</th>
                 <th scope="col">Name</th>
                 <th scope="col">Description</th>
-                <th scope="col"></th>
+                <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -67,28 +51,23 @@
                 <td>{{ acessory.id }}</td>
                 <td>{{ acessory.name }}</td>
                 <td>{{ acessory.description }}</td>
-                <td class="alinharADireita">
-                  @if(!modeModal){
-                  <a
-                    href="admin/acessories/edit/{{ acessory.id }}"
-                    class="btn btn-primary btn-rounded"
-                    mdbRippled
-                  >
-                    <i class="fas fa-pencil fa-sm"></i>
-                  </a>
-                  <button
-                    (click)="deleteById(acessory)"
-                    class="btn btn-danger btn-rounded"
-                    mdbRippled
-                  >
-                    <i class="fas fa-trash fa-sm"></i>
-                  </button>
-                  }@else {
-                  <button (click)="select(acessory)" class="btn btn-success btn-rounded" mdbRippled>
-                    Select
-                  </button>
-                  }
-                </td>
+                @if(hiddenButtons){
+                <button class="btn btn-sm btn-primary me-2" mdbRipple (click)="select(acessory)">
+                  Select
+                </button>
+                }@else {
+
+                <button
+                  class="btn btn-sm btn-warning me-2"
+                  mdRipple
+                  (click)="editAcessory(acessory)"
+                >
+                  Edit
+                </button>
+                <button class="btn btn-sm btn-danger" mdRipple (click)="deleteById(acessory)">
+                  Delete
+                </button>
+                }
               </tr>
               }
             </tbody>

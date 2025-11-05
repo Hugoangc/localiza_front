@@ -64,6 +64,7 @@ export class Carslist {
   }
   newCar() {
     this.editedCar = new Car();
+    this.editedCar.acessories = [];
     this.modalRef = this.modalService.open(this.modalCarsDetails);
   }
   editCar(car: Car) {

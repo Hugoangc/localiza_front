@@ -27,9 +27,9 @@
               <!-- @if(loginService.hasRole('ADMIN')){ -->
               @if(!modeModal){
               <div>
-                <a routerLink="/admin/brands/new" class="btn btn-success btn-rounded" mdbRippled>
-                  <i class="fas fa-plus fa-sm"></i> New
-                </a>
+                <button class="btn btn-success btn-rounded" mdRipple (click)="newBrand()">
+                  <i class="fas fa-plus fa-sm"></i> New Brand
+                </button>
               </div>
               }
               <!-- } -->
@@ -77,3 +77,13 @@
     </div>
   </div>
 </div>
+
+<ng-template #modalBrands>
+  <div class="modal-header">
+    <h5 class="modal-title">Brands Config</h5>
+    <button type="button" class="btn-close" (click)="modalRef.close()" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <app-brandsdetails [brand]="editedBrand" (return)="returnDetail($event)"> </app-brandsdetails>
+  </div>
+</ng-template>
