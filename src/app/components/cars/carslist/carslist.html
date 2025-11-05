@@ -53,9 +53,12 @@
               <button class="btn btn-sm btn-primary me-2" mdRipple (click)="editCar(car)">
                 Edit
               </button>
+              @if(loginService.hasRole("ADMIN")){
+
               <button class="btn btn-sm btn-danger" mdRipple (click)="deleteById(car)">
                 Delete
               </button>
+              }
             </td>
           </tr>
           }

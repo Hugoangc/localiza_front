@@ -6,6 +6,7 @@ import { Carsdetails } from '../carsdetails/carsdetails';
 import { CarService } from '../../../services/car';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { LoginService } from '../../../auth/login.service';
 
 @Component({
   selector: 'app-carslist',
@@ -18,6 +19,7 @@ export class Carslist {
   list: Car[] = [];
   search: string = '';
   editedCar!: Car;
+  loginService = inject(LoginService);
 
   carService = inject(CarService);
 

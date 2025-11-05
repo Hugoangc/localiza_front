@@ -31,11 +31,21 @@
         <li class="nav-item">
           <a class="nav-link active" href="admin/brands">Brands</a>
         </li>
+        @if(loginService.hasRole("ADMIN")){
         <li class="nav-item">
           <a class="nav-link active" href="admin/acessories">Acessories</a>
         </li>
+        }
+      </ul>
+      <ul class="navbar-nav mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link active" (click)="logout()" style="cursor: pointer">Log-out</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link me-3">
+            <i class="fas fa-user me-2"></i>
+            {{ usuario.role }}
+          </a>
         </li>
       </ul>
       <!-- Left links -->

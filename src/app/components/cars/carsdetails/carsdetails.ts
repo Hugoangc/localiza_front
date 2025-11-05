@@ -19,6 +19,7 @@ import { MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { Brandslist } from '../../brands/brandslist/brandslist';
 import { Acessorieslist } from '../../acessories/acessorieslist/acessorieslist';
 import { Acessory } from '../../../models/acessory';
+import { LoginService } from '../../../auth/login.service';
 @Component({
   selector: 'app-carsdetails',
   standalone: true,
@@ -29,6 +30,8 @@ import { Acessory } from '../../../models/acessory';
 export class Carsdetails {
   @Input('car') car!: Car;
   @Output('return') return = new EventEmitter<any>();
+  loginService = inject(LoginService);
+
   router = inject(ActivatedRoute); //parametro de rota
   router2 = inject(Router); //direcionamento
 
