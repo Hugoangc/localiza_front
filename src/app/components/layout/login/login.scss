@@ -1,0 +1,34 @@
+.fw-bold.text-primary {
+  font-size: 2.5rem;
+  color: #007bff !important;
+  letter-spacing: 1.5px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Remove o cursor de texto da tabela */
+table,
+table td,
+table th {
+  cursor: default;
+}
+/*  Remove o cursor de texto de todos os links de navegação */
+.nav-link,
+a {
+  cursor: pointer;
+}
+
+span,
+small,
+p {
+  user-select: none; /* Impede a seleção de texto */
+  cursor: default;
+}
+.text-muted.fs-6 {
+  font-family: 'Arial', sans-serif;
+  font-weight: 300;
+  color: #6c757d !important;
+}
+
+.card-body {
+  padding: 2rem;
+}
