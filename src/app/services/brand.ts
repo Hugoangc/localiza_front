@@ -2,12 +2,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Brand } from '../models/brand';
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class BrandService {
   http = inject(HttpClient);
-  API = 'http://localhost:8080/api/brand';
+  API = environment.SERVIDOR + '/api/brand';
 
   constructor() {}
   findAll(): Observable<Brand[]> {

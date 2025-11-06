@@ -5,13 +5,16 @@ import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { Login } from './login';
 import { Usuario } from './usuario';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
   http = inject(HttpClient);
-  API = 'http://localhost:8080/api/login';
-  AUTH_API = 'http://localhost:8080/api/auth';
+
+  API = environment.SERVIDOR + '/api/login';
+  AUTH_API = environment.SERVIDOR + '/api/auth';
+
   router = inject(Router);
 
   constructor() {}

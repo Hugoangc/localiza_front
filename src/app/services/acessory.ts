@@ -3,13 +3,15 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Acessory } from '../models/acessory';
 import { Page } from '../models/page';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
-})
+})  
+
 export class AcessoryService {
   http = inject(HttpClient);
-  API = 'http://localhost:8080/api/acessory';
+  API = environment.SERVIDOR+'/api/acessory';
   constructor() {}
 
   findAll(numPage: number, qtdePerPage: number): Observable<Page> {

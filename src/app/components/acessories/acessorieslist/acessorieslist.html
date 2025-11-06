@@ -1,39 +1,37 @@
-<br />
 <div class="container">
   <div class="row">
-    <div class="col-12 azul">
-      <div class="card">
-        <div class="card-body">
-          @if(!modeModal){
-          <h3 class="text-center"><i class="fas fa-circle-notch fa-sm"></i> Acessory Register</h3>
-          <br />
-          <div class="d-flex justify-content-end mb-3">
-            <button class="btn btn-sm btn-primary me-2" mdRipple (click)="newAcessory()">
-              <i class="fas fa-plus fa-sm"></i> New Acessory
-            </button>
-          </div>
-          <div class="col-6">
-            <div class="input-group mb-2">
-              <input
-                (keyup)="findByName()"
-                [(ngModel)]="search"
-                type="text"
-                class="form-control"
-                placeholder="Type the acessory name to search"
-                aria-label="Recipient's username"
-                aria-describedby="button-addon2"
-              />
-            </div>
-          </div>
-          <!-- @if(loginService.hasRole('ADMIN')){ -->
+    <div class="col-12">
+      <h2 class="my-3 text-center"><i class="fas fa-circle-notch fa-sm"></i> Acessory Register</h2>
 
-          <!-- } -->
+      @if(!modeModal){
+      <br />
+      <div class="d-flex justify-content-end mb-3">
+        <button class="btn btn-sm btn-primary me-2" mdRipple (click)="newAcessory()">
+          <i class="fas fa-plus fa-sm"></i> New Acessory
+        </button>
+      </div>
+      <div>
+        <div class="input-group mb-2">
+          <input
+            (keyup)="findByName()"
+            [(ngModel)]="search"
+            type="text"
+            class="form-control"
+            placeholder="Type the acessory name to search"
+            aria-label="Recipient's username"
+            aria-describedby="button-addon2"
+          />
+        </div>
+      </div>
+      <!-- @if(loginService.hasRole('ADMIN')){ -->
 
-          }
+      <!-- } -->
 
-          <div class="row">
-            <div class="col-6">
-              <!-- <div class="input-group mb-3">
+      }
+
+      <div class="row">
+        <div class="col-6">
+          <!-- <div class="input-group mb-3">
                 <input
                   (keyup)="findByName()"
                   [(ngModel)]="search"
@@ -44,49 +42,43 @@
                   aria-describedby="button-addon2"
                 />
               </div> -->
-            </div>
-          </div>
-
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Name</th>
-                <th scope="col">Description</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (acessory of list; track $index) {
-              <tr>
-                <td>{{ acessory.id }}</td>
-                <td>{{ acessory.name }}</td>
-                <td>{{ acessory.description }}</td>
-                @if(hiddenButtons){
-                <button class="btn btn-sm btn-primary me-2" mdbRipple (click)="select(acessory)">
-                  Select
-                </button>
-                }@else {
-
-                <td>
-                  <button
-                    class="btn btn-sm btn-warning me-2"
-                    mdRipple
-                    (click)="editAcessory(acessory)"
-                  >
-                    Edit
-                  </button>
-                  <button class="btn btn-sm btn-danger" mdRipple (click)="deleteById(acessory)">
-                    Delete
-                  </button>
-                </td>
-                }
-              </tr>
-              }
-            </tbody>
-          </table>
         </div>
       </div>
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (acessory of list; track $index) {
+          <tr>
+            <td>{{ acessory.id }}</td>
+            <td>{{ acessory.name }}</td>
+            <td>{{ acessory.description }}</td>
+            @if(hiddenButtons){
+            <button class="btn btn-sm btn-primary me-2" mdbRipple (click)="select(acessory)">
+              Select
+            </button>
+            }@else {
+
+            <td>
+              <button class="btn btn-sm btn-warning me-2" mdRipple (click)="editAcessory(acessory)">
+                Edit
+              </button>
+              <button class="btn btn-sm btn-danger" mdRipple (click)="deleteById(acessory)">
+                Delete
+              </button>
+            </td>
+            }
+          </tr>
+          }
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
