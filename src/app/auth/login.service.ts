@@ -24,7 +24,7 @@ export class LoginService {
   }
 
   register(login: Login): Observable<Usuario> {
-    return this.http.post<Usuario>('http://localhost:8080/api/auth/register', login);
+    return this.http.post<Usuario>(environment.SERVIDOR + '/api/auth/register', login);
   }
 
   addToken(token: string) {
