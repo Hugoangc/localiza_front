@@ -24,10 +24,17 @@ export class LoginComponent {
   @ViewChild('modalRegister') modalRegister!: TemplateRef<any>;
   modalService = inject(MdbModalService);
   modalRef: any;
+
+  errorMessage: string | null = null;
   constructor() {
     //this.loginService.removerToken();
   }
+
+  clearError() {
+    this.errorMessage = null;
+  }
   logar() {
+    this.errorMessage = null;
     this.loginService.logar(this.login).subscribe({
       next: (token) => {
         if (token) {
@@ -38,8 +45,13 @@ export class LoginComponent {
         }
       },
       error: (erro) => {
-        console.error(erro);
-        Swal.fire('Erro', 'Ocorreu um erro ao tentar logar.', 'error');
+        let errorMessage = 'Ocorreu um erro ao tentar logar.';
+
+        if (erro && erro.error && typeof erro.error === 'string') {
+          this.errorMessage = erro.error; // Ex: "Credenciais inválidas."
+        } else {
+          this.errorMessage = 'Erro de conexão ou servidor. Tente novamente.';
+        }
       },
     });
   }

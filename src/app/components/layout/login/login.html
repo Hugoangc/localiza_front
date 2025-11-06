@@ -4,6 +4,12 @@
       <h2 class="text-center mb-4">Login</h2>
       <div class="card">
         <div class="card-body">
+          @if(errorMessage){
+          <div class="alert-danger text-center btn-sm btn-rounded" role="alert">
+            {{ errorMessage }}
+          </div>
+          <br />
+          }
           <!-- <form #form="ngForm" (ngSubmit)="logar()"> -->
           <form #form="ngForm" (ngSubmit)="logar()">
             <mdb-form-control>
@@ -13,8 +19,11 @@
                 id="user"
                 name="user"
                 class="form-control"
+                (input)="clearError()"
+                required
                 [(ngModel)]="login.username"
               />
+
               <label mdbLabel class="form-label" for="form1">User</label>
             </mdb-form-control>
             <br />
@@ -25,6 +34,7 @@
                 id="password"
                 name="password"
                 class="form-control"
+                required
                 [(ngModel)]="login.password"
               />
               <label mdbLabel class="form-label" for="form1">Password</label>
@@ -37,11 +47,14 @@
               name="login"
               type="submit"
               mdbRipple
+              [disabled]="!form.valid"
               (click)="logar()"
             >
               Acessar
             </button>
           </form>
+          <br />
+
           <!-- </form> -->
           <hr />
           <div class="text-center">
