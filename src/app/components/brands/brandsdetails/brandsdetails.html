@@ -1,33 +1,58 @@
 <div class="container">
-  <div class="row justify-content-center">
-    <div class="col-lgcol-md-8 col-sm-10">
-      <div class="card mb-3">
-        <h2 class="my-3 text-center card-header">Register a new brand</h2>
+  <div class="row">
+    <div class="col-4"></div>
 
+    <div class="col-lgcol-md-8">
+      <div>
         <div class="card-body">
-          <mdb-form-control class="mb-3">
-            <input
-              mdbInput
-              type="text"
-              id="carName"
-              class="form-control"
-              [(ngModel)]="brand.name"
-            />
-            <label mdbLabel class="form-label" for="carName">Name</label>
-          </mdb-form-control>
-        </div>
+          <form #formulario="ngForm" (ngSubmit)="save()">
+            <mdb-form-control>
+              <input
+                mdbInput
+                type="text"
+                name="name"
+                class="form-control"
+                [(ngModel)]="brand.name"
+                required
+              />
+              <label mdbLabel class="form-label" for="name">Brand Name:</label>
+            </mdb-form-control>
 
-        <div class="card-footer text-center">
-          <button
-            type="button"
-            class="btn btn-primary btn-rounded w-100"
-            mdbRipple
-            (click)="save()"
-          >
-            Save
-          </button>
+            <br />
+            <mdb-form-control>
+              <input
+                [(ngModel)]="brand.description"
+                mdbInput
+                type="text"
+                name="description"
+                class="form-control"
+              />
+              <label mdbLabel class="form-label" for="description">Description:</label>
+            </mdb-form-control>
+            <br />
+
+            @if(brand.id > 0){
+            <button
+              type="submit"
+              [disabled]="!formulario.valid"
+              class="btn btn-success btn-rounded"
+            >
+              <i class="fas fa-save fa-sm"></i> Update
+            </button>
+            }@else {
+            <button
+              type="submit"
+              [disabled]="!formulario.valid"
+              class="btn btn-success btn-rounded"
+            >
+              <i class="fas fa-save fa-sm"></i> Save
+            </button>
+            }
+          </form>
         </div>
       </div>
     </div>
+
+    <div class="col-4"></div>
   </div>
 </div>

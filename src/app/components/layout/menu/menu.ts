@@ -3,10 +3,11 @@ import { MdbCollapseModule } from 'mdb-angular-ui-kit/collapse';
 import { LoginService } from '../../../auth/login.service';
 import { Usuario } from '../../../auth/usuario';
 import Swal from 'sweetalert2';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-menu',
-  imports: [MdbCollapseModule],
+  imports: [MdbCollapseModule, CommonModule],
   templateUrl: './menu.html',
   styleUrl: './menu.scss',
 })
@@ -20,24 +21,38 @@ export class Menu {
     this.loginService.logout();
   }
 
-  toggleMyRole() {
-    const currentUser = this.loginService.getUsuarioLogado();
+  toggleRole() {
+    const currentRole = this.usuario.role;
+    const newRole = currentRole === 'ADMIN' ? 'USER' : 'ADMIN';
 
-    const newRole = currentUser.role === 'ADMIN' ? 'USER' : 'ADMIN';
+    // if (currentRole !== 'ADMIN') {
+    //   Swal.fire('Acesso negado', 'Apenas ADMIN pode alternar a role.', 'warning');
+    //   return;
+    // }
 
-    this.loginService.updateUserRole(currentUser.id, newRole).subscribe({
-      next: (updatedUser) => {
-        Swal.fire(
-          'Sucesso!',
-          `Sua role foi alterada para ${updatedUser.role}. Você será deslogado.`,
-          'success'
-        );
-
-        this.loginService.logout();
-      },
-      error: (err) => {
-        Swal.fire('Erro!', 'Acesso negado ou usuário não encontrado.', 'error');
-      },
+    Swal.fire({
+      title: `Mudar para ${newRole}?`,
+      text: 'Isso forçará um logout para gerar um novo token.',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sim, mudar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.loginService.updateUserRole(this.usuario.id, newRole).subscribe({
+          next: (updatedUser) => {
+            Swal.fire('Sucesso!', `Role alterada para ${updatedUser.role}.`, 'success');
+            this.logout();
+          },
+          error: (err) => {
+            Swal.fire(
+              'Erro!',
+              'Não foi possível alterar a role. O backend pode estar com erro.',
+              'error'
+            );
+          },
+        });
+      }
     });
   }
 }

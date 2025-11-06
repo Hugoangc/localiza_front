@@ -6,7 +6,7 @@
       <div class="d-flex justify-content-end mb-3">
         <button class="btn btn-sm btn-primary me-2" mdRipple (click)="newCar()">New Car</button>
       </div>
-      <div class="input-group mb-2">
+      <div class="input-group mb-2 col-6">
         <input
           (keyup)="findNames()"
           [(ngModel)]="search"
@@ -44,7 +44,7 @@
             } @else{
             <td><a>$</a>{{ car.price }}</td>
             }
-            <td>{{ car.brand?.name }}</td>
+            <td>{{ car.brand.name }}</td>
             <td>{{ car.manufactureYear }}</td>
 
             <!-- <td>{{car.model}}</td>
@@ -71,7 +71,12 @@
 
 <ng-template #modalCarsDetails>
   <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Register</h5>
+    @if(editedCar.id > 0){
+    <h5 class="modal-title" id="exampleModalLabel">Edit the current Car</h5>
+    }@else{
+    <h5 class="modal-title" id="exampleModalLabel">Register a New Car</h5>
+
+    }
     <button
       type="button"
       class="btn-close"

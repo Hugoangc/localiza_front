@@ -1,124 +1,131 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-lg col-md-8 col-sm-10">
-      <div class="card mb-3">
-        <h2 class="my-3 text-center card-header">Register a new car</h2>
-
-        <div class="card-body">
-          <mdb-form-control class="mb-3">
-            <input mdbInput type="text" id="carName" class="form-control" [(ngModel)]="car.name" />
-            <label mdbLabel class="form-label" for="carName">Name</label>
-          </mdb-form-control>
-          <br />
-
-          <mdb-form-control class="mb-3">
-            <input mdbInput type="text" id="carYear" class="form-control" [(ngModel)]="car.color" />
-            <label mdbLabel class="form-label" for="carColor">Color</label>
-          </mdb-form-control>
-          <mdb-form-control class="mb-3">
-            <input
-              mdbInput
-              type="number"
-              id="carYear"
-              class="form-control"
-              [(ngModel)]="car.price"
-            />
-            <label mdbLabel class="form-label" for="carPrice">Price</label>
-          </mdb-form-control>
-          <mdb-form-control class="mb-3">
-            <input
-              mdbInput
-              type="number"
-              id="carYear"
-              class="form-control"
-              [(ngModel)]="car.manufactureYear"
-            />
-            <label mdbLabel class="form-label" for="carYear">Year</label>
-          </mdb-form-control>
-          <br />
-          <div>
-            @if(car.brand == null){
-
-            <button
-              type="button"
-              class="btn btn-primary btn-rounded w-100"
-              mdbRipple
-              (click)="searchBrand()"
-            >
-              Search Brand</button
-            >}@else {
-            <p class="text-primary alert-primary">Brand: {{ car.brand?.name }}</p>
-            <button
-              type="button"
-              class="btn btn-warning btn-rounded w-100"
-              mdbRipple
-              (click)="searchBrand()"
-            >
-              Change Brand
-            </button>
-            }
-          </div>
-          <br />
-          <div>
-            <button
-              type="button"
-              class="btn btn-primary btn-rounded w-100"
-              mdbRipple
-              (click)="searchAcessory()"
-            >
-              Search Acessory
-            </button>
+      <div>
+        <form #form="ngForm" (ngSubmit)="save()">
+          <div class="card-body">
+            <mdb-form-control class="mb-3">
+              <input
+                mdbInput
+                type="text"
+                id="carName"
+                class="form-control"
+                name="carName"
+                [(ngModel)]="car.name"
+                required
+              />
+              <label mdbLabel class="form-label" for="carName" required>Name</label>
+            </mdb-form-control>
             <br />
 
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th scope="col">Id</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Description</th>
-                  <th scope="col">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (acessory of car.acessories; track $index) {
-                <tr>
-                  <td>{{ acessory.id }}</td>
-                  <td>{{ acessory.name }}</td>
-                  <td>{{ acessory.description }}</td>
-                  <button
-                    class="btn btn-sm btn-danger"
-                    mdbRipple
-                    (click)="unlinkAccessory(acessory)"
-                  >
-                    Remove
-                  </button>
-                </tr>
-                }
-              </tbody>
-            </table>
-          </div>
-          <!-- <mdb-form-control class="mb-3">
-            <input
-              mdbInput
-              type="text"
-              id="carBrand"
-              class="form-control"
-              [(ngModel)]="car.brand.name"
-            />
-            <label mdbLabel class="form-label" for="carBrand">Brand</label>
-          </mdb-form-control> -->
-        </div>
+            <mdb-form-control class="mb-3">
+              <input
+                mdbInput
+                type="text"
+                id="carYear"
+                name="carColor"
+                class="form-control"
+                [(ngModel)]="car.color"
+                required
+              />
+              <label mdbLabel class="form-label" for="carColor" required>Color</label>
+            </mdb-form-control>
+            <mdb-form-control class="mb-3">
+              <input
+                mdbInput
+                type="number"
+                id="carYear"
+                class="form-control"
+                [(ngModel)]="car.price"
+              />
+              <label mdbLabel class="form-label" for="carPrice">Price</label>
+            </mdb-form-control>
+            <mdb-form-control class="mb-3">
+              <input
+                mdbInput
+                type="number"
+                id="carYear"
+                name="carYear"
+                class="form-control"
+                [(ngModel)]="car.manufactureYear"
+                required
+              />
+              <label mdbLabel class="form-label" for="carYear" required>Year</label>
+            </mdb-form-control>
+            <br />
+            <div>
+              @if(car.brand == null){
+              <button
+                type="button"
+                class="btn btn-primary btn-rounded w-100"
+                mdbRipple
+                (click)="searchBrand()"
+              >
+                Search Brand</button
+              >}@else {
+              <p class="text-primary alert-primary">Brand: {{ car.brand.name }}</p>
+              <button
+                type="button"
+                class="btn btn-warning btn-rounded w-100"
+                mdbRipple
+                (click)="searchBrand()"
+              >
+                Change Brand
+              </button>
+              }
+            </div>
+            <br />
+            <div>
+              <button
+                type="button"
+                class="btn btn-primary btn-rounded w-100"
+                mdbRipple
+                (click)="searchAcessory()"
+              >
+                Search Acessory
+              </button>
+              <br />
 
-        <div class="card-footer text-center">
-          <button
-            type="button"
-            class="btn btn-primary btn-rounded w-100"
-            mdbRipple
-            (click)="save()"
-          >
-            Save
-          </button>
-        </div>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (acessory of car.acessories; track $index) {
+                  <tr>
+                    <td>{{ acessory.id }}</td>
+                    <td>{{ acessory.name }}</td>
+                    <td>{{ acessory.description }}</td>
+                    <button
+                      class="btn btn-sm btn-danger"
+                      mdbRipple
+                      (click)="unlinkAccessory(acessory)"
+                    >
+                      Remove
+                    </button>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card-footer text-center">
+            <button
+              type="submit"
+              class="btn btn-primary btn-rounded w-100"
+              mdbRipple
+              [disabled]="!form.valid || car.brand == null"
+            >
+              Save
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

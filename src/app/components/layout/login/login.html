@@ -2,40 +2,47 @@
   <div class="row justify-content-center w-100">
     <div class="col-lg-4 col-md-6 col-sm-8">
       <h2 class="text-center mb-4">Login</h2>
-
       <div class="card">
         <div class="card-body">
-          <mdb-form-control>
-            <input
-              mdbInput
-              type="text"
-              id="user"
-              class="form-control"
-              [(ngModel)]="login.username"
-            />
-            <label mdbLabel class="form-label" for="form1">User</label>
-          </mdb-form-control>
-          <br />
-          <mdb-form-control>
-            <input
-              mdbInput
-              type="password"
-              id="password"
-              class="form-control"
-              [(ngModel)]="login.password"
-            />
-            <label mdbLabel class="form-label" for="form1">Password</label>
-          </mdb-form-control>
-          <br />
+          <!-- <form #form="ngForm" (ngSubmit)="logar()"> -->
+          <form #form="ngForm" (ngSubmit)="logar()">
+            <mdb-form-control>
+              <input
+                mdbInput
+                type="text"
+                id="user"
+                name="user"
+                class="form-control"
+                [(ngModel)]="login.username"
+              />
+              <label mdbLabel class="form-label" for="form1">User</label>
+            </mdb-form-control>
+            <br />
+            <mdb-form-control>
+              <input
+                mdbInput
+                type="password"
+                id="password"
+                name="password"
+                class="form-control"
+                [(ngModel)]="login.password"
+              />
+              <label mdbLabel class="form-label" for="form1">Password</label>
+            </mdb-form-control>
+            <br />
 
-          <button
-            type="button"
-            class="btn btn-primary btn-rounded w-100"
-            mdbRipple
-            (click)="logar()"
-          >
-            Acessar
-          </button>
+            <button
+              type="button"
+              class="btn btn-primary btn-rounded w-100"
+              name="login"
+              type="submit"
+              mdbRipple
+              (click)="logar()"
+            >
+              Acessar
+            </button>
+          </form>
+          <!-- </form> -->
           <hr />
           <div class="text-center">
             <p>Não tem uma conta?</p>

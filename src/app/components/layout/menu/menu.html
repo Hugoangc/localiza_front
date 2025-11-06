@@ -41,10 +41,26 @@
         <li class="nav-item">
           <a class="nav-link active" (click)="logout()" style="cursor: pointer">Log-out</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link me-3">
+
+        <!-- @if(usuario.role === 'ADMIN'){ -->
+        <li class="nav-item me-3">
+          <a class="nav-link" (click)="toggleRole()" style="cursor: pointer">
+            <i class="fas fa-toggle-on me-1 text-success"></i>
+            Mudar Role
+          </a>
+        </li>
+        <!-- } -->
+
+        <li class="nav-item me-3">
+          <a
+            class="nav-link"
+            [ngClass]="{
+              'text-success': usuario.role === 'ADMIN',
+              text: usuario.role === 'USER'
+            }"
+          >
             <i class="fas fa-user me-2"></i>
-            {{ usuario.role }}
+            {{ usuario.username }} ({{ usuario.role }})
           </a>
         </li>
       </ul>

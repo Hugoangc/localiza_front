@@ -4,11 +4,8 @@
     <div class="col-4"></div>
 
     <div class="col-lgcol-md-8">
-      <div class="card">
-        <div class="card-body centralizar">
-          <h3>Acessory Register</h3>
-          <br />
-
+      <div>
+        <div class="card-body">
           <form #formulario="ngForm" (ngSubmit)="save()">
             <mdb-form-control>
               <input
@@ -17,6 +14,7 @@
                 name="name"
                 class="form-control"
                 [(ngModel)]="acessory.name"
+                required
               />
               <label mdbLabel class="form-label" for="name">Acessory Name:</label>
             </mdb-form-control>
@@ -29,6 +27,7 @@
                 type="text"
                 name="description"
                 class="form-control"
+                required
               />
               <label mdbLabel class="form-label" for="description">Description:</label>
             </mdb-form-control>

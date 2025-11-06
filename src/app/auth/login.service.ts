@@ -12,7 +12,6 @@ export class LoginService {
   http = inject(HttpClient);
   API = 'http://localhost:8080/api/login';
   AUTH_API = 'http://localhost:8080/api/auth';
-  ADMIN_API = 'http://localhost:8080/api/admin';
   router = inject(Router);
 
   constructor() {}
@@ -60,9 +59,7 @@ export class LoginService {
   }
 
   updateUserRole(userId: number, newRole: string): Observable<Usuario> {
-    // A requisição PUT deve incluir o ID na rota e a nova role como parâmetro de consulta.
     let params = new HttpParams().set('role', newRole);
-
-    return this.http.put<Usuario>(`${this.ADMIN_API}/role/${userId}`, {}, { params: params });
+    return this.http.put<Usuario>(`${this.AUTH_API}/role/${userId}`, {}, { params: params });
   }
 }
