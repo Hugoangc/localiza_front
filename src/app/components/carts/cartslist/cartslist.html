@@ -78,6 +78,17 @@
       </tr>
       }
     </tbody>
+    <tfoot class="table-light">
+      <tr>
+        <td colspan="4" class="text-end fw-bold fs-5 align-middle">Total:</td>
+
+        <td class="fw-bold fs-5 text-success align-middle">
+          {{ getGrandTotal() | currency : 'USD' }}
+        </td>
+
+        <td></td>
+      </tr>
+    </tfoot>
   </table>
 
   <div class="text-end mt-4">
@@ -88,8 +99,6 @@
 
   }
 </div>
-
-<!-- Modal: editar acessórios -->
 <ng-template #modalEditAccessories>
   <div class="modal-header">
     @if (editingItem?.car) {
@@ -107,7 +116,7 @@
 
     <p><strong>Available Accessories:</strong></p>
 
-    @if (editingItem.chosenAccessories.length > 0) {
+    @if (editingItem.car.acessories && editingItem.car.acessories.length > 0) {
     <ul class="list-group">
       @for (acc of editingItem.car.acessories; track acc.id) {
       <li class="list-group-item">
@@ -137,9 +146,23 @@
   </div>
 </ng-template>
 
-<!-- Modal: checkout -->
-<ng-template #modalCheckoutsdetails>
+<!-- <ng-template #modalCheckoutsdetails>
   <div class="modal-content">
     <app-checkoutsdetails (return)="returnCheckout()"></app-checkoutsdetails>
+  </div>
+</ng-template> -->
+
+<ng-template #modalCheckoutsdetails>
+  <div class="modal-header">
+    <h5 class="modal-title">Finalizar Compra</h5>
+    <button type="button" class="btn-close" (click)="closeModal()"></button>
+  </div>
+
+  <div class="modal-body">
+    <app-checkoutsdetails
+      [modeModal]="true"
+      [hiddenButtons]="false"
+      (return)="returnCheckout()"
+    ></app-checkoutsdetails>
   </div>
 </ng-template>

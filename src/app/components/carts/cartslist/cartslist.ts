@@ -275,6 +275,14 @@ export class Cartslist implements OnInit {
   closeModal(): void {
     this.modalRef.close();
   }
+  getGrandTotal(): number {
+    if (!this.cart || !this.cart.items) {
+      return 0;
+    }
+    return this.cart.items.reduce((total, item) => {
+      return total + this.getTotalPrice(item);
+    }, 0);
+  }
 
   getTotalPrice(item: CartItem): number {
     const accessoriesTotal = item.chosenAccessories?.reduce((t, a) => t + a.price, 0) || 0;

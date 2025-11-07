@@ -65,4 +65,22 @@ export class LoginService {
     let params = new HttpParams().set('role', newRole);
     return this.http.put<Usuario>(`${this.AUTH_API}/role/${userId}`, {}, { params: params });
   }
+
+  isLoggedIn(): boolean {
+    const token = this.getToken();
+
+    if (!token) return false; // sem token = não logado
+
+    try {
+      const decoded = jwtDecode<JwtPayload>(token);
+
+      if (!decoded || !decoded.exp) return false; // token inválido ou sem exp
+
+      const currentTime = Math.floor(Date.now() / 1000);
+      return decoded.exp > currentTime; // true se ainda não expirou
+    } catch (error) {
+      console.error('Error decoding JWT:', error);
+      return false; // token corrompido ou inválido
+    }
+  }
 }

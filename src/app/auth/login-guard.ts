@@ -8,12 +8,22 @@ export const loginGuard: CanActivateFn = (route, state) => {
   let router = inject(Router);
 
   try {
+    if (!loginService.isLoggedIn()) {
+      Swal.fire('Session Expired', 'Please log in again.', 'info');
+      router.navigate(['/login']);
+      return false;
+    }
     if (loginService.hasRole('ADMIN')) {
       return true;
     }
 
     if (loginService.hasRole('USER') && state.url === '/admin/brands') {
-      Swal.fire('Acesso Negado', 'Você não tem permissão para acessar esta página.', 'warning');
+      Swal.fire('Access Denied', 'You do not have permission to access this page.', 'warning');
+      router.navigate(['/admin/cars']);
+      return false;
+    }
+    if (loginService.hasRole('USER') && state.url === '/admin/acessories') {
+      Swal.fire('Authentication Error', 'Invalid or expired token. Please log in again.', 'error');
       router.navigate(['/admin/cars']);
       return false;
     }
@@ -24,8 +34,8 @@ export const loginGuard: CanActivateFn = (route, state) => {
 
     // Notifica e força o logout
     Swal.fire({
-      title: 'Sessão Inválida',
-      text: 'Erro de segurança ou token expirado. Faça login novamente.',
+      title: 'Invalid Session',
+      text: 'Security error or expired token. Please log in again.',
       icon: 'error',
     }).then(() => {
       localStorage.removeItem('token');

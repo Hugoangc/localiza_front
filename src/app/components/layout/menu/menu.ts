@@ -1,27 +1,43 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { LoginService } from '../../../auth/login.service';
 import { Usuario } from '../../../auth/usuario';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { MdbDropdownModule } from 'mdb-angular-ui-kit/dropdown';
 import { MdbCollapseModule } from 'mdb-angular-ui-kit/collapse';
-import { DropdownModule, CollapseModule, ButtonModule } from '@coreui/angular';
-import { Cart } from '../../../models/cart';
+import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
 import { CartService } from '../../../services/cart';
+import { importProvidersFrom } from '@angular/core';
 
 @Component({
   selector: 'app-menu',
   standalone: true,
-  imports: [MdbCollapseModule, CommonModule, MdbDropdownModule, DropdownModule],
+  imports: [CommonModule, MdbDropdownModule, MdbCollapseModule, MdbTooltipModule],
   templateUrl: './menu.html',
-  styleUrl: './menu.scss',
+  styleUrls: ['./menu.scss'],
 })
-export class Menu {
+export class Menu implements OnInit {
   loginService = inject(LoginService);
+  cartService = inject(CartService);
   usuario!: Usuario;
+  cartCount = 0;
+
   constructor() {
     this.usuario = this.loginService.getUsuarioLogado();
   }
+
+  ngOnInit(): void {
+    this.atualizarCarrinho();
+    this.cartService.cartUpdated$.subscribe(() => this.atualizarCarrinho());
+  }
+
+  atualizarCarrinho() {
+    this.cartService.getCart().subscribe({
+      next: (cart) => (this.cartCount = cart?.items?.length || 0),
+      error: () => (this.cartCount = 0),
+    });
+  }
+
   logout() {
     this.loginService.logout();
   }
@@ -29,11 +45,6 @@ export class Menu {
   toggleRole() {
     const currentRole = this.usuario.role;
     const newRole = currentRole === 'ADMIN' ? 'USER' : 'ADMIN';
-
-    // if (currentRole !== 'ADMIN') {
-    //   Swal.fire('Acesso negado', 'Apenas ADMIN pode alternar a role.', 'warning');
-    //   return;
-    // }
 
     Swal.fire({
       title: `Mudar para ${newRole}?`,
@@ -49,12 +60,8 @@ export class Menu {
             Swal.fire('Sucesso!', `Role alterada para ${updatedUser.role}.`, 'success');
             this.logout();
           },
-          error: (err) => {
-            Swal.fire(
-              'Erro!',
-              'Não foi possível alterar a role. O backend pode estar com erro.',
-              'error'
-            );
+          error: () => {
+            Swal.fire('Erro!', 'Não foi possível alterar a role.', 'error');
           },
         });
       }

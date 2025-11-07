@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { Cart } from '../models/cart';
 import { CartItemRequestDTO } from '../models/cart-item-request.dto';
 import { CartItem } from '../models/cart-item';
@@ -13,8 +13,13 @@ export class CartService {
   http = inject(HttpClient);
   API = environment.SERVIDOR + '/api/cart';
 
+  private cartUpdatedSubject = new BehaviorSubject<void>(undefined);
+  cartUpdated$ = this.cartUpdatedSubject.asObservable();
+
   addToCart(requestBody: CartItemRequestDTO): Observable<CartItem> {
-    return this.http.post<CartItem>(`${this.API}/add`, requestBody);
+    const result = this.http.post<CartItem>(`${this.API}/add`, requestBody);
+    result.subscribe(() => this.cartUpdatedSubject.next());
+    return result;
   }
 
   getCart(): Observable<Cart> {
@@ -22,13 +27,24 @@ export class CartService {
   }
 
   updateCartItem(itemId: number, requestBody: CartItemRequestDTO): Observable<CartItem> {
-    return this.http.put<CartItem>(`${this.API}/item/${itemId}`, requestBody);
+    const result = this.http.put<CartItem>(`${this.API}/item/${itemId}`, requestBody);
+    result.subscribe(() => this.cartUpdatedSubject.next());
+    return result;
   }
 
   removeFromCart(itemId: number): Observable<void> {
-    return this.http.delete<void>(`${this.API}/remove/${itemId}`);
+    const result = this.http.delete<void>(`${this.API}/remove/${itemId}`);
+    result.subscribe(() => this.cartUpdatedSubject.next());
+    return result;
   }
-  clearCart() {
-    return this.http.delete(`${this.API}/clear`);
+
+  clearCart(): Observable<void> {
+    const result = this.http.delete<void>(`${this.API}/clear`);
+    result.subscribe(() => this.cartUpdatedSubject.next());
+    return result;
+  }
+
+  notifyCartUpdated(): void {
+    this.cartUpdatedSubject.next();
   }
 }

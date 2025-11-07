@@ -1,0 +1,41 @@
+.checkout-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  background: linear-gradient(135deg, #e0f7fa, #fff);
+}
+
+.checkout-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 2.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+  }
+
+  h2 {
+    color: #00796b;
+    font-weight: 600;
+  }
+
+  .btn-success {
+    background: #00796b;
+    border: none;
+
+    &:hover {
+      background: #00695c;
+    }
+  }
+
+  .invalid-feedback {
+    display: block;
+    color: #d32f2f;
+    font-size: 0.85rem;
+  }
+}
