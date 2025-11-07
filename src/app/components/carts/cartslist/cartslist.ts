@@ -282,6 +282,10 @@ export class Cartslist implements OnInit {
   }
 
   clearCart(): void {
+    if (!this.cart || !this.cart.items || this.cart.items.length === 0) {
+      Swal.fire('Carrinho vazio', 'Não há itens para limpar.', 'info');
+      return;
+    }
     Swal.fire({
       title: 'Tem certeza?',
       text: 'Isso vai remover todos os itens do carrinho!',
