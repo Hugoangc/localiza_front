@@ -1,0 +1,69 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h2 class="my-3 text-center"><i class="fas fa-shopping-cart"></i> Meu Carrinho</h2>
+
+      @if (isLoading) {
+      <div class="text-center">
+        <p>Carregando carrinho...</p>
+      </div>
+      } @if (!isLoading && cart) { @if (cart.items.length > 0) {
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Produto</th>
+            <th scope="col">Acessórios Escolhidos</th>
+            <th scope="col">Preço do Item</th>
+            <th scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of cart.items; track $index) {
+          <tr>
+            <td>
+              <strong>{{ item.car.name }}</strong>
+              <p>Preço Base: {{ item.car.price | currency : 'USD' }}</p>
+            </td>
+
+            <td>
+              @if(item.chosenAccessories.length > 0){
+              <ul>
+                @for(acc of item.chosenAccessories; track $index){
+                <li>{{ acc.name }} ({{ acc.price | currency : 'USD' }})</li>
+                }
+              </ul>
+              } @else {
+              <span class="text-muted">Sem acessórios</span>
+              }
+            </td>
+
+            <td>
+              <strong>{{ item.calculatedPrice | currency : 'USD' }}</strong>
+            </td>
+
+            <td>
+              <button class="btn btn-sm btn-warning me-2" (click)="editAccessories(item)">
+                Editar
+              </button>
+              <button class="btn btn-sm btn-danger" (click)="removeItem(item)">Remover</button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+
+      <hr />
+
+      <div class="text-end">
+        <h2>Total do Carrinho: {{ cart.totalPrice | currency : 'USD' }}</h2>
+        <button (click)="goToCheckout()" class="btn btn-success btn-lg">Finalizar Compra</button>
+      </div>
+      } @else {
+      <div class="text-center">
+        <h2>Seu carrinho está vazio.</h2>
+        <button (click)="goToHome()" class="btn btn-primary">Ver Carros</button>
+      </div>
+      } }
+    </div>
+  </div>
+</div>

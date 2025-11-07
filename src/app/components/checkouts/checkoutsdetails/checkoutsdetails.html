@@ -1,0 +1,120 @@
+<br />
+<div class="container">
+  <div class="row">
+    <div class="col-lg-2 col-md-1"></div>
+    <div class="col-lg-8 col-md-10">
+      <h2 class="my-3 text-center">Finalizar Compra</h2>
+      <p class="text-center">Preencha os dados do seu cartão de crédito.</p>
+
+      <div class="card-body">
+        <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
+          <mdb-form-control class="mb-4">
+            <input
+              mdbInput
+              type="text"
+              id="cardHolderName"
+              formControlName="cardHolderName"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  paymentForm.get('cardHolderName')?.touched &&
+                  paymentForm.get('cardHolderName')?.invalid
+              }"
+            />
+            <label mdbLabel class="form-label" for="cardHolderName">Nome no Cartão:</label>
+            @if (paymentForm.get('cardHolderName')?.touched &&
+            paymentForm.get('cardHolderName')?.invalid) {
+            <div class="invalid-feedback">Nome é obrigatório.</div>
+            }
+          </mdb-form-control>
+
+          <mdb-form-control class="mb-4">
+            <input
+              mdbInput
+              type="text"
+              id="cardNumber"
+              formControlName="cardNumber"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  paymentForm.get('cardNumber')?.touched && paymentForm.get('cardNumber')?.invalid
+              }"
+            />
+            <label mdbLabel class="form-label" for="cardNumber">Número do Cartão:</label>
+            @if (paymentForm.get('cardNumber')?.touched && paymentForm.get('cardNumber')?.invalid) {
+            <div class="invalid-feedback">Deve ter 16 dígitos.</div>
+            }
+          </mdb-form-control>
+
+          <div class="row mb-4">
+            <div class="col">
+              <mdb-form-control>
+                <input
+                  mdbInput
+                  type="text"
+                  id="expiryDate"
+                  formControlName="expiryDate"
+                  class="form-control"
+                  [ngClass]="{
+                    'is-invalid':
+                      paymentForm.get('expiryDate')?.touched &&
+                      paymentForm.get('expiryDate')?.invalid
+                  }"
+                />
+                <label mdbLabel class="form-label" for="expiryDate">Validade (MM/AA):</label>
+                @if (paymentForm.get('expiryDate')?.touched &&
+                paymentForm.get('expiryDate')?.invalid) {
+                <div class="invalid-feedback">Formato MM/AA.</div>
+                }
+              </mdb-form-control>
+            </div>
+            <div class="col">
+              <mdb-form-control>
+                <input
+                  mdbInput
+                  type="text"
+                  id="cvv"
+                  formControlName="cvv"
+                  class="form-control"
+                  [ngClass]="{
+                    'is-invalid': paymentForm.get('cvv')?.touched && paymentForm.get('cvv')?.invalid
+                  }"
+                />
+                <label mdbLabel class="form-label" for="cvv">CVV:</label>
+                @if (paymentForm.get('cvv')?.touched && paymentForm.get('cvv')?.invalid) {
+                <div class="invalid-feedback">3 ou 4 dígitos.</div>
+                }
+              </mdb-form-control>
+            </div>
+          </div>
+
+          <div class="form-check mb-4">
+            <input
+              type="checkbox"
+              id="saveCard"
+              formControlName="saveCard"
+              class="form-check-input"
+            />
+            <label for="saveCard" class="form-check-label"
+              >Salvar este cartão para compras futuras</label
+            >
+          </div>
+
+          <button
+            type="submit"
+            [disabled]="paymentForm.invalid || isSubmitting"
+            class="btn btn-success btn-rounded btn-lg w-100"
+          >
+            @if (!isSubmitting) {
+            <span><i class="fas fa-save fa-sm"></i> Pagar Agora</span>
+            } @if (isSubmitting) {
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span> Processando...</span>
+            }
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-1"></div>
+  </div>
+</div>

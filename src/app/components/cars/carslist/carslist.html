@@ -19,9 +19,6 @@
           aria-describedby="button-addon2"
         />
       </div>
-      <!-- <button class="btn btn-sm btn-primary me-2" mdRipple routerLink="/admin/cars/new">
-          New Car
-        </button> -->
 
       <table border="1" class="table table-striped">
         <thead>
@@ -60,6 +57,11 @@
               <button class="btn btn-sm btn-danger" mdRipple (click)="deleteById(car)">
                 Delete
               </button>
+              }@else {
+
+              <button class="btn btn-sm btn-success" mdbRipple (click)="addToCart(car)">
+                <i class="fas fa-shopping-cart"></i>
+              </button>
               }
             </td>
           </tr>
@@ -69,6 +71,7 @@
     </div>
   </div>
 </div>
+
 <!-- Modal -->
 
 <ng-template #modalCarsDetails>

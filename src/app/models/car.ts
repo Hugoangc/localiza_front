@@ -9,6 +9,8 @@ export class Car {
   brand!: Brand;
   manufactureYear!: number;
   carStatus: boolean = true;
+  stock!: number;
+  accessoryPriceMultiplier!: number;
   acessories: Acessory[] = [];
   constructor() {}
 

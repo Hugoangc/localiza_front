@@ -9,6 +9,8 @@ import { Brandsdetails } from './components/brands/brandsdetails/brandsdetails';
 import { Acessorieslist } from './components/acessories/acessorieslist/acessorieslist';
 import { Acessoriesdetails } from './components/acessories/acessoriesdetails/acessoriesdetails';
 import { loginGuard } from './auth/login-guard';
+import { Cartslist } from './components/carts/cartslist/cartslist';
+import { Checkoutsdetails } from './components/checkouts/checkoutsdetails/checkoutsdetails';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -29,6 +31,8 @@ export const routes: Routes = [
       { path: 'acessories', component: Acessorieslist },
       { path: 'acessories/new', component: Acessoriesdetails },
       { path: 'acessories/edit/:id', component: Acessoriesdetails },
+      { path: 'carrinho', component: Cartslist },
+      { path: 'checkout', component: Checkoutsdetails },
     ],
   },
 ];
