@@ -16,13 +16,12 @@
               />
               <label mdbLabel class="form-label" for="carName" required>Name</label>
             </mdb-form-control>
-            <br />
 
             <mdb-form-control class="mb-3">
               <input
                 mdbInput
                 type="text"
-                id="carYear"
+                id="carColor"
                 name="carColor"
                 class="form-control"
                 [(ngModel)]="car.color"
@@ -30,6 +29,7 @@
               />
               <label mdbLabel class="form-label" for="carColor" required>Color</label>
             </mdb-form-control>
+
             <mdb-form-control class="mb-3">
               <input
                 mdbInput
@@ -45,6 +45,19 @@
               <input
                 mdbInput
                 type="number"
+                id="accessoryPriceMultiplier"
+                name="accessoryPriceMultiplier"
+                class="form-control"
+                [(ngModel)]="car.accessoryPriceMultiplier"
+              />
+              <label mdbLabel class="form-label" for="accessoryPriceMultiplier"
+                >Acessory Multiplier</label
+              >
+            </mdb-form-control>
+            <mdb-form-control class="mb-3">
+              <input
+                mdbInput
+                type="number"
                 id="carYear"
                 name="carYear"
                 class="form-control"
@@ -53,77 +66,87 @@
               />
               <label mdbLabel class="form-label" for="carYear" required>Year</label>
             </mdb-form-control>
-            <br />
-            <div>
+
+            <div class="mb-3 p-3 border rounded">
               @if(car.brand == null){
+              <p class="text-danger mb-2">Nenhuma marca selecionada.</p>
               <button
                 type="button"
                 class="btn btn-primary btn-rounded w-100"
                 mdbRipple
                 (click)="searchBrand()"
               >
-                Search Brand</button
-              >}@else {
-              <p class="text-primary alert-primary">Brand: {{ car.brand.name }}</p>
+                <i class="fas fa-search me-2"></i> Buscar Marca
+              </button>
+              }@else {
+              <p class="mb-2"><strong>Marca Selecionada:</strong></p>
+              <div class="alert alert-primary p-2">
+                {{ car.brand.name }}
+              </div>
               <button
                 type="button"
-                class="btn btn-warning btn-rounded w-100"
+                class="btn btn-outline-primary btn-rounded w-100"
                 mdbRipple
                 (click)="searchBrand()"
               >
-                Change Brand
+                <i class="fas fa-exchange-alt me-2"></i> Trocar Marca
               </button>
               }
             </div>
-            <br />
-            <div>
-              <button
-                type="button"
-                class="btn btn-primary btn-rounded w-100"
-                mdbRipple
-                (click)="searchAcessory()"
-              >
-                Search Acessory
-              </button>
-              <br />
 
-              <table class="table table-striped">
+            <div class="p-3 border rounded">
+              @if(car.acessories && car.acessories.length > 0) {
+              <p class="mb-2"><strong>Acessórios Vinculados:</strong></p>
+              <table class="table table-sm table-striped table-bordered">
                 <thead>
                   <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col" class="text-center" style="width: 80px">Remover</th>
                   </tr>
                 </thead>
                 <tbody>
-                  @for (acessory of car.acessories; track $index) {
+                  @for (acessory of car.acessories; track acessory.id) {
                   <tr>
-                    <td>{{ acessory.id }}</td>
-                    <td>{{ acessory.name }}</td>
-                    <td>{{ acessory.description }}</td>
-                    <button
-                      class="btn btn-sm btn-danger"
-                      mdbRipple
-                      (click)="unlinkAccessory(acessory)"
-                    >
-                      Remove
-                    </button>
+                    <td class="align-middle">{{ acessory.name }}</td>
+                    <td class="text-center">
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-danger"
+                        mdbRipple
+                        (click)="unlinkAccessory(acessory)"
+                        title="Remover Acessório"
+                      >
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </td>
                   </tr>
                   }
                 </tbody>
               </table>
+              } @else {
+              <div class="alert alert-info" role="alert">
+                Nenhum acessório vinculado a este carro.
+              </div>
+              }
+
+              <button
+                type="button"
+                class="btn btn-primary btn-rounded w-100 mt-2"
+                mdbRipple
+                (click)="searchAcessory()"
+              >
+                <i class="fas fa-search me-2"></i> Buscar/Adicionar Acessório
+              </button>
             </div>
           </div>
-
           <div class="card-footer text-center">
             <button
               type="submit"
-              class="btn btn-primary btn-rounded w-100"
+              class="btn btn-success btn-rounded w-100"
               mdbRipple
               [disabled]="!form.valid || car.brand == null"
             >
-              Save
+              <i class="fas fa-save me-2"></i> Salvar Carro
             </button>
           </div>
         </form>

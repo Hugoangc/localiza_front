@@ -1,4 +1,13 @@
-import { Component, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -23,10 +32,18 @@ import { PaymentRequestDTO } from '../../../models/payment-request.dto'; // Veri
 export class Checkoutsdetails implements OnInit {
   paymentForm!: FormGroup;
   isSubmitting = false;
+  @Output('return') return = new EventEmitter<any>();
+  @ViewChild('modalAcessoriesDetails') modalAcessoriesDetails!: TemplateRef<any>;
+  modalRef: any;
 
-  private fb = inject(FormBuilder);
-  private orderService = inject(OrderService);
-  private router = inject(Router);
+  //@ViewChild('modalAcessoriesDetails') modalAcessoriesDetails!: TemplateRef<any>; // referencia da modal
+  @Input('modeModal') modeModal: boolean = false;
+  @Input('hiddenButtons') hiddenButtons: boolean = false;
+
+  fb = inject(FormBuilder);
+  orderService = inject(OrderService);
+  router = inject(Router);
+  @ViewChild('modalCheckoutsdetails') modalCheckoutsdetails!: TemplateRef<any>; // referencia da modal
 
   ngOnInit(): void {
     // Validação de front-end
@@ -41,7 +58,7 @@ export class Checkoutsdetails implements OnInit {
 
   onSubmit(): void {
     if (this.paymentForm.invalid) {
-      this.paymentForm.markAllAsTouched(); // Mostra erros em todos os campos
+      this.paymentForm.markAllAsTouched();
       Swal.fire('Formulário Inválido', 'Verifique os dados do cartão.', 'warning');
       return;
     }
@@ -57,7 +74,7 @@ export class Checkoutsdetails implements OnInit {
           `Seu pedido #${order.id} foi processado com sucesso.`,
           'success'
         );
-        this.router.navigate(['/meus-pedidos', order.id]);
+        this.return.emit(order);
       },
       error: (err) => {
         this.isSubmitting = false;

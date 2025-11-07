@@ -3,7 +3,7 @@
   <!-- Container wrapper -->
   <div class="container-fluid">
     <!-- Navbar brand -->
-    <a class="navbar-brand" href="/">Localiza</a>
+    <a class="navbar-brand" href="admin/cars">Localiza</a>
 
     <!-- Toggle button -->
     <button
@@ -31,11 +31,18 @@
         <li class="nav-item">
           <a class="nav-link active" href="admin/brands">Brands</a>
         </li>
+
         @if(loginService.hasRole("ADMIN")){
         <li class="nav-item">
           <a class="nav-link active" href="admin/acessories">Acessories</a>
         </li>
+
         }
+        <li>
+          <a class="text-reset me-3" href="admin/cart">
+            <i class="fas fa-shopping-cart"></i>
+          </a>
+        </li>
       </ul>
       <ul class="navbar-nav mb-2 mb-lg-0">
         <li class="nav-item">

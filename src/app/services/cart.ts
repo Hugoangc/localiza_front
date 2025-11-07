@@ -28,4 +28,7 @@ export class CartService {
   removeFromCart(itemId: number): Observable<void> {
     return this.http.delete<void>(`${this.API}/remove/${itemId}`);
   }
+  clearCart() {
+    return this.http.delete(`${this.API}/clear`);
+  }
 }

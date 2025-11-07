@@ -6,6 +6,6 @@ export class CartItem {
   id!: number;
   cart!: Cart;
   car!: Car;
-  calculatedPrice!: number;
+  calculatedPrice: number = 0;
   chosenAccessories: Acessory[] = [];
 }

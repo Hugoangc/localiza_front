@@ -1,13 +1,18 @@
 import { Component, inject } from '@angular/core';
-import { MdbCollapseModule } from 'mdb-angular-ui-kit/collapse';
 import { LoginService } from '../../../auth/login.service';
 import { Usuario } from '../../../auth/usuario';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
+import { MdbDropdownModule } from 'mdb-angular-ui-kit/dropdown';
+import { MdbCollapseModule } from 'mdb-angular-ui-kit/collapse';
+import { DropdownModule, CollapseModule, ButtonModule } from '@coreui/angular';
+import { Cart } from '../../../models/cart';
+import { CartService } from '../../../services/cart';
 
 @Component({
   selector: 'app-menu',
-  imports: [MdbCollapseModule, CommonModule],
+  standalone: true,
+  imports: [MdbCollapseModule, CommonModule, MdbDropdownModule, DropdownModule],
   templateUrl: './menu.html',
   styleUrl: './menu.scss',
 })

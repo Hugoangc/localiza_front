@@ -20,6 +20,54 @@
         />
       </div>
 
+      <!--começa aqui-->
+      <!-- <div class="py-0">
+        <div class="row g-1 mb-1 border rounded bg-light align-items-end">
+          <div class="col-md-2">
+            <mdb-form-control>
+              <input
+                (keyup)="applyFilters()"
+                [(ngModel)]="search"
+                type="text"
+                class="form-control"
+                placeholder="Type the car name to search"
+                aria-label="Recipient's username"
+                aria-describedby="button-addon2"
+              />
+              <label mdbLabel class="form-label" for="searchBrand">Buscar por Marca:</label>
+            </mdb-form-control>
+          </div>
+
+          <div class="col-md-2">
+            <label for="priceRange" class="form-label">
+              Preço Máximo:
+              <strong>{{ searchMaxPrice | currency : 'BRL' }}</strong>
+            </label>
+            <mdb-range
+              id="priceRange"
+              [min]="0"
+              [max]="MAX_PRICE_LIMIT"
+              [step]="1000"
+              [(ngModel)]="searchMaxPrice"
+            ></mdb-range>
+          </div>
+
+          <div class="col-md-2 d-flex">
+            <button (click)="applyFilters()" class="btn btn-primary me-2 w-100" title="Buscar">
+              <i class="fas fa-search"></i>
+            </button>
+            <button
+              (click)="clearFilters()"
+              class="btn btn-outline-secondary"
+              title="Limpar Filtros"
+            >
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </div> -->
+      <!--termina aq-->
+
       <table border="1" class="table table-striped">
         <thead>
           <tr>
@@ -52,17 +100,15 @@
               <button class="btn btn-sm btn-primary me-2" mdRipple (click)="editCar(car)">
                 Edit
               </button>
-              @if(loginService.hasRole("ADMIN")){
 
               <button class="btn btn-sm btn-danger" mdRipple (click)="deleteById(car)">
                 Delete
               </button>
-              }@else {
-
+              <br />
+              <br />
               <button class="btn btn-sm btn-success" mdbRipple (click)="addToCart(car)">
                 <i class="fas fa-shopping-cart"></i>
               </button>
-              }
             </td>
           </tr>
           }
@@ -92,5 +138,11 @@
   </div>
   <div class="modal-body">
     <app-carsdetails [car]="editedCar" (return)="returnDetail($event)"></app-carsdetails>
+  </div>
+</ng-template>
+
+<ng-template #modalCartsDetails>
+  <div class="modal-content">
+    <app-cartsdetails [car]="editedCar" (return)="handleCartReturn($event)"></app-cartsdetails>
   </div>
 </ng-template>

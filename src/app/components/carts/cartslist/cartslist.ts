@@ -1,27 +1,186 @@
+// import { CommonModule } from '@angular/common';
+// import {
+//   Component,
+//   OnInit,
+//   inject,
+//   ViewChild,
+//   TemplateRef,
+//   Output,
+//   EventEmitter,
+//   input,
+//   Input,
+// } from '@angular/core';
+// import { FormsModule } from '@angular/forms';
+// import { Router } from '@angular/router';
+// import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
+// import { MdbModalService, MdbModalRef, MdbModalModule } from 'mdb-angular-ui-kit/modal';
+// import Swal from 'sweetalert2';
+// import { CartService } from '../../../services/cart';
+// import { CartItem } from '../../../models/cart-item';
+// import { CartItemRequestDTO } from '../../../models/cart-item-request.dto';
+// import { Cart } from '../../../models/cart';
+// import { Acessory } from '../../../models/acessory';
+// import { Checkoutsdetails } from '../../checkouts/checkoutsdetails/checkoutsdetails';
+// @Component({
+//   selector: 'app-cartslist',
+//   standalone: true,
+//   imports: [MdbFormsModule, FormsModule, CommonModule, MdbModalModule, Checkoutsdetails],
+//   templateUrl: './cartslist.html',
+//   styleUrls: ['./cartslist.scss'],
+// })
+// export class Cartslist implements OnInit {
+//   isLoading = true;
+//   @Output('return') return = new EventEmitter<any>();
+
+//   @Input('cart') cart!: Cart;
+//   @ViewChild('modalCheckoutsdetails') modalCheckoutsdetails!: TemplateRef<any>;
+//   @ViewChild('modalEditAccessories') modalEditAccessories!: TemplateRef<any>;
+
+//   modalService = inject(MdbModalService);
+//   modalRef: any;
+
+//   editingItem: CartItem | null = null;
+//   tempSelectedAccessoryIds: Set<number> = new Set();
+//   cartService = inject(CartService);
+//   router = inject(Router);
+
+//   ngOnInit(): void {
+//     this.loadCart();
+//   }
+//   loadCart(): void {
+//     this.isLoading = true;
+
+//     this.cartService.getCart().subscribe({
+//       next: (cartData) => {
+//         this.cart = cartData;
+//         this.isLoading = false;
+//       },
+//       error: (err) => {
+//         console.error('Erro ao carregar carrinho', err);
+//         this.isLoading = false;
+//         Swal.fire('Erro', 'Não foi possível carregar seu carrinho.', 'error');
+//       },
+//     });
+//   }
+
+//   editAccessories(item: CartItem): void {
+//     this.editingItem = JSON.parse(JSON.stringify(item)); // Clona o item
+//     this.tempSelectedAccessoryIds.clear();
+//     this.editingItem?.chosenAccessories.forEach((acc) => {
+//       this.tempSelectedAccessoryIds.add(acc.id);
+//     });
+//     this.modalRef = this.modalService.open(this.modalEditAccessories); // Abre o modal
+//   }
+
+//   // Funções que o modal de checkbox precisa
+//   toggleAccessorySelection(accessory: Acessory, isChecked: boolean): void {
+//     if (isChecked) {
+//       this.tempSelectedAccessoryIds.add(accessory.id);
+//     } else {
+//       this.tempSelectedAccessoryIds.delete(accessory.id);
+//     }
+//   }
+
+//   isAccessorySelected(accessoryId: number): boolean {
+//     return this.tempSelectedAccessoryIds.has(accessoryId);
+//   }
+
+//   saveAccessoryChanges(): void {
+//     if (!this.editingItem) return;
+
+//     const request: CartItemRequestDTO = {
+//       carId: this.editingItem.car.id,
+//       accessoryIds: Array.from(this.tempSelectedAccessoryIds),
+//     };
+
+//     this.cartService.updateCartItem(this.editingItem.id, request).subscribe({
+//       next: (updatedItem) => {
+//         Swal.fire('Atualizado!', `Preço atualizado.`, 'success');
+//         this.modalRef?.close();
+//         this.loadCart();
+//       },
+//       error: (err) => {
+//         Swal.fire('Erro!', 'Não foi possível atualizar o item.', 'error');
+//       },
+//     });
+//   }
+
+//   removeItem(item: CartItem): void {
+//     Swal.fire({
+//       title: 'Remover Item',
+//       text: `Deseja remover ${item.car.name} do carrinho?`,
+//       icon: 'warning',
+//       showCancelButton: true,
+//       confirmButtonText: 'Sim, remover!',
+//       cancelButtonText: 'Cancelar',
+//     }).then((result) => {
+//       if (result.isConfirmed) {
+//         this.cartService.removeFromCart(item.id).subscribe({
+//           next: () => {
+//             Swal.fire('Removido!', 'Item removido do carrinho.', 'success');
+//             this.loadCart();
+//           },
+//           error: (err) => {
+//             Swal.fire('Erro!', 'Não foi possível remover o item.', 'error');
+//           },
+//         });
+//       }
+//     });
+//   }
+
+//   goToCheckout(): void {
+//     this.modalRef = this.modalService.open(this.modalCheckoutsdetails, {
+//       modalClass: 'modal-lg',
+//     });
+//   }
+
+//   returnCheckout(event: any): void {
+//     this.modalRef?.close();
+//     this.loadCart(); // Recarrega o carrinho após o checkout
+//   }
+//   goToHome(): void {
+//     this.router.navigate(['/admin/cars']);
+//   }
+
+//   closeModal(): void {
+//     this.modalRef.close();
+//   }
+// }
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ViewChild, TemplateRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
+import { MdbModalService, MdbModalRef, MdbModalModule } from 'mdb-angular-ui-kit/modal';
 import Swal from 'sweetalert2';
-import { CartService } from '../../../services/cart'; // Verifique o caminho
-import { CartItem } from '../../../models/cart-item'; // Verifique o caminho
-import { CartItemRequestDTO } from '../../../models/cart-item-request.dto'; // Verifique o caminho
-import { Cart } from '../../../models/cart'; // Verifique o caminho
+import { CartService } from '../../../services/cart';
+import { CartItem } from '../../../models/cart-item';
+import { CartItemRequestDTO } from '../../../models/cart-item-request.dto';
+import { Cart } from '../../../models/cart';
+import { Acessory } from '../../../models/acessory';
+import { Checkoutsdetails } from '../../checkouts/checkoutsdetails/checkoutsdetails';
 
 @Component({
   selector: 'app-cartslist',
   standalone: true,
-  imports: [MdbFormsModule, FormsModule, CommonModule],
+  imports: [MdbFormsModule, FormsModule, CommonModule, MdbModalModule, Checkoutsdetails],
   templateUrl: './cartslist.html',
   styleUrls: ['./cartslist.scss'],
 })
 export class Cartslist implements OnInit {
-  cart: Cart | null = null;
   isLoading = true;
+  cart!: Cart;
 
-  private cartService = inject(CartService);
-  private router = inject(Router);
+  @ViewChild('modalCheckoutsdetails') modalCheckoutsdetails!: TemplateRef<any>;
+  @ViewChild('modalEditAccessories') modalEditAccessories!: TemplateRef<any>;
+
+  modalService = inject(MdbModalService);
+  modalRef!: MdbModalRef<any>;
+  editingItem!: CartItem;
+  tempSelectedAccessoryIds: Set<number> = new Set();
+
+  cartService = inject(CartService);
+  router = inject(Router);
 
   ngOnInit(): void {
     this.loadCart();
@@ -30,15 +189,50 @@ export class Cartslist implements OnInit {
   loadCart(): void {
     this.isLoading = true;
     this.cartService.getCart().subscribe({
-      next: (data) => {
-        this.cart = data;
+      next: (cartData) => {
+        this.cart = cartData;
         this.isLoading = false;
       },
-      error: (err) => {
-        console.error('Erro ao carregar carrinho', err);
+      error: () => {
         this.isLoading = false;
-        Swal.fire('Erro!', 'Não foi possível carregar o carrinho.', 'error');
+        Swal.fire('Erro', 'Não foi possível carregar seu carrinho.', 'error');
       },
+    });
+  }
+
+  editAccessories(item: CartItem): void {
+    this.editingItem = JSON.parse(JSON.stringify(item));
+    this.tempSelectedAccessoryIds.clear();
+    this.editingItem?.chosenAccessories?.forEach((acc) =>
+      this.tempSelectedAccessoryIds.add(acc.id)
+    );
+    this.modalRef = this.modalService.open(this.modalEditAccessories);
+  }
+
+  toggleAccessorySelection(accessory: Acessory, isChecked: boolean): void {
+    if (isChecked) this.tempSelectedAccessoryIds.add(accessory.id);
+    else this.tempSelectedAccessoryIds.delete(accessory.id);
+  }
+
+  isAccessorySelected(accessoryId: number): boolean {
+    return this.tempSelectedAccessoryIds.has(accessoryId);
+  }
+
+  saveAccessoryChanges(): void {
+    if (!this.editingItem) return;
+
+    const request: CartItemRequestDTO = {
+      carId: this.editingItem.car.id,
+      accessoryIds: Array.from(this.tempSelectedAccessoryIds),
+    };
+
+    this.cartService.updateCartItem(this.editingItem.id, request).subscribe({
+      next: () => {
+        Swal.fire('Atualizado!', 'Preço atualizado.', 'success');
+        this.modalRef.close();
+        this.loadCart();
+      },
+      error: () => Swal.fire('Erro!', 'Não foi possível atualizar o item.', 'error'),
     });
   }
 
@@ -55,88 +249,59 @@ export class Cartslist implements OnInit {
         this.cartService.removeFromCart(item.id).subscribe({
           next: () => {
             Swal.fire('Removido!', 'Item removido do carrinho.', 'success');
-            this.loadCart(); // Recarrega o carrinho
-          },
-          error: (err) => {
-            Swal.fire('Erro!', 'Não foi possível remover o item.', 'error');
-          },
-        });
-      }
-    });
-  }
-
-  editAccessories(item: CartItem): void {
-    const car = item.car;
-    const currentlyChosenIds = item.chosenAccessories.map((acc) => acc.id);
-
-    let accessoryHtml = '';
-    if (car.acessories && car.acessories.length > 0) {
-      accessoryHtml = '<div style="text-align: left; margin-top: 15px;">';
-      car.acessories.forEach((acc) => {
-        const isChecked = currentlyChosenIds.includes(acc.id);
-        accessoryHtml += `
-          <div class="swal2-checkbox" style="display: flex; align-items: center; margin-bottom: 10px;">
-            <input type="checkbox" class="swal2-input" value="${acc.id}" id="acc-${acc.id}" ${
-          isChecked ? 'checked' : ''
-        }>
-            <label for="acc-${acc.id}" style="margin-left: 10px; cursor: pointer;">
-              ${acc.name} (+ $${acc.price.toFixed(2)})
-            </label>
-          </div>
-        `;
-      });
-      accessoryHtml += '</div>';
-    } else {
-      accessoryHtml = '<p>Este carro não possui acessórios.</p>';
-    }
-
-    Swal.fire({
-      title: `Editar ${car.name}`,
-      html: accessoryHtml,
-      icon: 'info',
-      showCancelButton: true,
-      confirmButtonText: 'Atualizar Item',
-      cancelButtonText: 'Cancelar',
-      preConfirm: () => {
-        const selectedAccessoryIds: number[] = [];
-        const checkboxes = document.querySelectorAll(
-          '.swal2-checkbox input[type=checkbox]:checked'
-        );
-        checkboxes.forEach((checkbox) => {
-          selectedAccessoryIds.push(Number((checkbox as HTMLInputElement).value));
-        });
-        return selectedAccessoryIds;
-      },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const selectedIds = result.value as number[];
-        const request: CartItemRequestDTO = {
-          carId: car.id,
-          accessoryIds: selectedIds,
-        };
-
-        this.cartService.updateCartItem(item.id, request).subscribe({
-          next: (updatedItem) => {
-            Swal.fire(
-              'Atualizado!',
-              `Preço atualizado para $${updatedItem.calculatedPrice.toFixed(2)}`,
-              'success'
-            );
             this.loadCart();
           },
-          error: (err) => {
-            Swal.fire('Erro!', 'Não foi possível atualizar o item.', 'error');
-          },
+          error: () => Swal.fire('Erro!', 'Não foi possível remover o item.', 'error'),
         });
       }
     });
   }
 
   goToCheckout(): void {
-    this.router.navigate(['/admin/checkout']);
+    this.modalRef = this.modalService.open(this.modalCheckoutsdetails, {
+      modalClass: 'modal-lg',
+    });
+  }
+
+  returnCheckout(): void {
+    this.modalRef.close();
+    this.loadCart();
   }
 
   goToHome(): void {
     this.router.navigate(['/admin/cars']);
+  }
+
+  closeModal(): void {
+    this.modalRef.close();
+  }
+
+  getTotalPrice(item: CartItem): number {
+    const accessoriesTotal = item.chosenAccessories?.reduce((t, a) => t + a.price, 0) || 0;
+    return item.car?.price ? item.car.price + accessoriesTotal : accessoriesTotal;
+  }
+
+  clearCart(): void {
+    Swal.fire({
+      title: 'Tem certeza?',
+      text: 'Isso vai remover todos os itens do carrinho!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim, limpar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.cartService.clearCart().subscribe({
+          next: () => {
+            Swal.fire('Limpo!', 'O carrinho foi esvaziado.', 'success');
+            this.loadCart(); // recarrega a lista de itens
+          },
+          error: (err) => {
+            console.error(err);
+            Swal.fire('Erro', 'Não foi possível limpar o carrinho.', 'error');
+          },
+        });
+      }
+    });
   }
 }

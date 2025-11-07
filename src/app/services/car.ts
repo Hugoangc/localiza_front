@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Car } from '../models/car';
 import { environment } from '../../environments/environment';
+import { Page } from '../models/page';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,26 @@ export class CarService {
   findAll(): Observable<Car[]> {
     return this.http.get<Car[]>(this.API + '/findAll');
   }
+  findByPriceBetween(
+    brand?: string, // Parâmetro opcional de marca
+    minPrice?: number | null, // Parâmetro opcional de preço mínimo
+    maxPrice?: number | null // Parâmetro opcional de preço máximo
+  ): Observable<Car[]> {
+    let params = new HttpParams();
+
+    if (brand && brand.trim() !== '') {
+      params = params.append('brand', brand);
+    }
+    if (minPrice != null) {
+      params = params.append('minPrice', minPrice.toString());
+    }
+    if (maxPrice != null) {
+      params = params.append('maxPrice', maxPrice.toString());
+    }
+
+    return this.http.get<Car[]>(this.API, { params });
+  }
+
   deleteById(id: number): Observable<string> {
     return this.http.delete<string>(this.API + '/' + id, {
       responseType: 'text' as 'json',
