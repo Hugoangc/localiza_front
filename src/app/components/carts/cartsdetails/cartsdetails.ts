@@ -7,6 +7,7 @@ import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { CartService } from '../../../services/cart'; // ✅ IMPORTANTE
 import { CartItemRequestDTO } from '../../../models/cart-item-request.dto';
+import { mergeMap, Observable, retryWhen, throwError, timer } from 'rxjs';
 
 @Component({
   selector: 'app-cartsdetails',
@@ -28,25 +29,53 @@ export class Cartsdetails {
     this.return.emit('continue');
   }
 
+  // addToCart(): void {
+  //   if (!this.car?.id) {
+  //     Swal.fire('Error', 'Invalid car information.', 'error');
+  //     return;
+  //   }
+
+  //   const request: CartItemRequestDTO = {
+  //     carId: this.car.id,
+  //     accessoryIds: [],
+  //   };
+
+  //   this.cartService.addToCart(request).subscribe({
+  //     next: () => {
+  //       Swal.fire('Added!', `${this.car.name} was added to your cart.`, 'success');
+  //       this.return.emit('continue');
+  //     },
+  //     error: (err) => {
+  //       console.error(err);
+  //       Swal.fire('Error', 'Unable to add the car to cart.', 'error');
+  //     },
+  //   });
+  // }
+  isAddingToCart = false;
   addToCart(): void {
     if (!this.car?.id) {
-      Swal.fire('Error', 'Invalid car information.', 'error');
+      Swal.fire('Erro', 'Informações do carro inválidas.', 'error');
       return;
     }
+
+    if (this.isAddingToCart) return; // evita múltiplos cliques
+    this.isAddingToCart = true;
 
     const request: CartItemRequestDTO = {
       carId: this.car.id,
       accessoryIds: [],
     };
 
-    this.cartService.addToCart(request).subscribe({
+    this.retryRequest(this.cartService.addToCart(request), 3, 300).subscribe({
       next: () => {
-        Swal.fire('Added!', `${this.car.name} was added to your cart.`, 'success');
+        Swal.fire('Adicionado!', `${this.car.name} foi adicionado ao carrinho.`, 'success');
         this.return.emit('continue');
+        this.isAddingToCart = false;
       },
       error: (err) => {
         console.error(err);
-        Swal.fire('Error', 'Unable to add the car to cart.', 'error');
+        Swal.fire('Erro', 'Não foi possível adicionar o carro ao carrinho.', 'error');
+        this.isAddingToCart = false;
       },
     });
   }
@@ -79,5 +108,20 @@ export class Cartsdetails {
         Swal.fire('Error', 'Unable to add the car to cart.', 'error');
       },
     });
+  }
+
+  private retryRequest<T>(observable$: Observable<T>, retries = 3, delayMs = 200): Observable<T> {
+    return observable$.pipe(
+      retryWhen((errors) =>
+        errors.pipe(
+          mergeMap((error, i) => {
+            if (i < retries && error.status === 400 && error.error?.includes('Deadlock')) {
+              return timer(delayMs); // espera e tenta novamente
+            }
+            return throwError(() => error);
+          })
+        )
+      )
+    );
   }
 }
