@@ -69,7 +69,7 @@
 
             <div class="mb-3 p-3 border rounded">
               @if(car.brand == null){
-              <p class="text-danger mb-2">Nenhuma marca selecionada.</p>
+              <p class="text-danger mb-2">Select a brand.</p>
               <button
                 type="button"
                 class="btn btn-primary btn-rounded w-100"
@@ -79,7 +79,7 @@
                 <i class="fas fa-search me-2"></i> Buscar Marca
               </button>
               }@else {
-              <p class="mb-2"><strong>Marca Selecionada:</strong></p>
+              <p class="mb-2"><strong>Selected Brand:</strong></p>
               <div class="alert alert-primary p-2">
                 {{ car.brand.name }}
               </div>
@@ -89,19 +89,19 @@
                 mdbRipple
                 (click)="searchBrand()"
               >
-                <i class="fas fa-exchange-alt me-2"></i> Trocar Marca
+                <i class="fas fa-exchange-alt me-2"></i> Change Brand
               </button>
               }
             </div>
 
             <div class="p-3 border rounded">
               @if(car.acessories && car.acessories.length > 0) {
-              <p class="mb-2"><strong>Acessórios Vinculados:</strong></p>
+              <p class="mb-2"><strong>Linked acessories:</strong></p>
               <table class="table table-sm table-striped table-bordered">
                 <thead>
                   <tr>
-                    <th scope="col">Nome</th>
-                    <th scope="col" class="text-center" style="width: 80px">Remover</th>
+                    <th scope="col">Name</th>
+                    <th scope="col" class="text-center" style="width: 80px">Remove</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -124,9 +124,7 @@
                 </tbody>
               </table>
               } @else {
-              <div class="alert alert-info" role="alert">
-                Nenhum acessório vinculado a este carro.
-              </div>
+              <div class="alert alert-info" role="alert">None acessory linked</div>
               }
 
               <button
@@ -135,7 +133,7 @@
                 mdbRipple
                 (click)="searchAcessory()"
               >
-                <i class="fas fa-search me-2"></i> Buscar/Adicionar Acessório
+                <i class="fas fa-search me-2"></i> Search/Add acessory
               </button>
             </div>
           </div>
@@ -146,7 +144,7 @@
               mdbRipple
               [disabled]="!form.valid || car.brand == null"
             >
-              <i class="fas fa-save me-2"></i> Salvar Carro
+              <i class="fas fa-save me-2"></i> Save car
             </button>
           </div>
         </form>
