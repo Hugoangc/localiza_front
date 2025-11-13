@@ -63,7 +63,7 @@
         </td>
 
         <td>
-          {{ getTotalPrice(item) | currency : 'USD' }}
+          {{ item.calculatedPrice | currency : 'USD' }}
         </td>
 
         <td>
@@ -83,7 +83,7 @@
         <td colspan="4" class="text-end fw-bold fs-5 align-middle">Total:</td>
 
         <td class="fw-bold fs-5 text-success align-middle">
-          {{ getGrandTotal() | currency : 'USD' }}
+          {{ cart.totalPrice | currency : 'USD' }}
         </td>
 
         <td></td>

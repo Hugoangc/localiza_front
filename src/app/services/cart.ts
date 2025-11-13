@@ -13,12 +13,8 @@ export class CartService {
   http = inject(HttpClient);
   API = environment.SERVIDOR + '/api/cart';
 
-  private cartUpdatedSubject = new BehaviorSubject<void>(undefined);
-  cartUpdated$ = this.cartUpdatedSubject.asObservable();
-
   addToCart(requestBody: CartItemRequestDTO): Observable<CartItem> {
     const result = this.http.post<CartItem>(`${this.API}/add`, requestBody);
-    result.subscribe(() => this.cartUpdatedSubject.next());
     return result;
   }
 
@@ -28,23 +24,16 @@ export class CartService {
 
   updateCartItem(itemId: number, requestBody: CartItemRequestDTO): Observable<CartItem> {
     const result = this.http.put<CartItem>(`${this.API}/item/${itemId}`, requestBody);
-    result.subscribe(() => this.cartUpdatedSubject.next());
     return result;
   }
 
   removeFromCart(itemId: number): Observable<void> {
     const result = this.http.delete<void>(`${this.API}/remove/${itemId}`);
-    result.subscribe(() => this.cartUpdatedSubject.next());
     return result;
   }
 
   clearCart(): Observable<void> {
     const result = this.http.delete<void>(`${this.API}/clear`);
-    result.subscribe(() => this.cartUpdatedSubject.next());
     return result;
-  }
-
-  notifyCartUpdated(): void {
-    this.cartUpdatedSubject.next();
   }
 }

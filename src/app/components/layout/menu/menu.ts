@@ -16,7 +16,7 @@ import { importProvidersFrom } from '@angular/core';
   templateUrl: './menu.html',
   styleUrls: ['./menu.scss'],
 })
-export class Menu implements OnInit {
+export class Menu {
   loginService = inject(LoginService);
   cartService = inject(CartService);
   usuario!: Usuario;
@@ -26,10 +26,10 @@ export class Menu implements OnInit {
     this.usuario = this.loginService.getUsuarioLogado();
   }
 
-  ngOnInit(): void {
-    this.atualizarCarrinho();
-    this.cartService.cartUpdated$.subscribe(() => this.atualizarCarrinho());
-  }
+  // ngOnInit(): void {
+  //   this.atualizarCarrinho();
+  //   this.cartService.cartUpdated.subscribe(() => this.atualizarCarrinho());
+  // }
 
   atualizarCarrinho() {
     this.cartService.getCart().subscribe({
