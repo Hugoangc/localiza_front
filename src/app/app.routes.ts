@@ -11,9 +11,11 @@ import { Acessoriesdetails } from './components/acessories/acessoriesdetails/ace
 import { loginGuard } from './auth/login-guard';
 import { Cartslist } from './components/carts/cartslist/cartslist';
 import { Checkoutsdetails } from './components/checkouts/checkoutsdetails/checkoutsdetails';
+import { redirectGuard } from './auth/redirect.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  // { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', component: LoginComponent, canActivate: [redirectGuard], pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterFormComponent },
 
@@ -36,4 +38,5 @@ export const routes: Routes = [
       { path: 'checkout', component: Checkoutsdetails },
     ],
   },
+  { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
