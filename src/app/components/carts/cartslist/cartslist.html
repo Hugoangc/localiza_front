@@ -101,14 +101,14 @@
 </div>
 <ng-template #modalEditAccessories>
   <div class="modal-header">
-    @if (editingItem?.car) {
+    @if (editingItem.car) {
     <h5 class="modal-title">Edit Accessories — {{ editingItem.car.name }}</h5>
     }
     <button type="button" class="btn-close" (click)="closeModal()"></button>
   </div>
 
   <div class="modal-body">
-    @if (editingItem?.car) {
+    @if (editingItem.car) {
     <p>
       Base Price:
       <strong>{{ editingItem.car.price | currency : 'USD' }}</strong>
