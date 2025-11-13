@@ -10,7 +10,7 @@
           formControlName="cardHolderName"
           class="form-control"
           id="cardHolderName"
-          placeholder="Nome impresso no cartão"
+          placeholder="Card name"
         />
         <label for="cardHolderName">Card name</label>
         <div
@@ -19,7 +19,7 @@
             paymentForm.get('cardHolderName')?.touched && paymentForm.get('cardHolderName')?.invalid
           "
         >
-          Name is obrigatory (mín. 5 letras)
+          Name is required (min. 5 letters)
         </div>
       </div>
 
@@ -29,8 +29,7 @@
           formControlName="cardNumber"
           class="form-control"
           id="cardNumber"
-          mask="0000 0000 0000 0000"
-          placeholder="Número do cartão"
+          placeholder="0000 0000 0000 0000"
         />
         <label for="cardNumber">Card number</label>
         <div
@@ -49,7 +48,6 @@
               formControlName="expiryDate"
               class="form-control"
               id="expiryDate"
-              mask="00/00"
               placeholder="MM/AA"
             />
             <label for="expiryDate">Expire Date (MM/AA)</label>
@@ -62,8 +60,7 @@
               formControlName="cvv"
               class="form-control"
               id="cvv"
-              mask="0000"
-              placeholder="CVV"
+              placeholder="123"
             />
             <label for="cvv">CVV</label>
           </div>
@@ -80,9 +77,10 @@
         class="btn btn-success btn-lg w-100 rounded-pill shadow-sm"
         [disabled]="paymentForm.invalid || isSubmitting"
       >
-        <span *ngIf="!isSubmitting"><i class="fas fa-lock"></i> Pagar Agora</span>
+        <span *ngIf="!isSubmitting"><i class="fas fa-lock"></i> Pay Now</span>
         <span *ngIf="isSubmitting">
-          <span class="spinner-border spinner-border-sm" role="status"></span> Processando...
+          <span class="spinner-border spinner-border-sm" role="status"></span>
+          Processing...
         </span>
       </button>
     </form>

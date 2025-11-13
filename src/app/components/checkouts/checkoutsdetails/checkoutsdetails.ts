@@ -1,55 +1,40 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  TemplateRef,
-  ViewChild,
-  inject,
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  ReactiveFormsModule,
-  FormsModule,
-} from '@angular/forms';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
-import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
+import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
+import Swal from 'sweetalert2';
 import { OrderService } from '../../../services/order';
-import { PaymentRequestDTO } from '../../../models/payment-request.dto';
 
 @Component({
   selector: 'app-checkoutsdetails',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MdbFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './checkoutsdetails.html',
   styleUrls: ['./checkoutsdetails.scss'],
 })
-export class Checkoutsdetails implements OnInit {
-  paymentForm!: FormGroup;
-  isSubmitting = false;
-
-  @Output('return') return = new EventEmitter<any>();
-  @Input('modeModal') modeModal: boolean = false;
-  @Input('hiddenButtons') hiddenButtons: boolean = false;
-
-  fb = inject(FormBuilder);
+export class Checkoutsdetails {
   orderService = inject(OrderService);
   router = inject(Router);
+  fb = inject(FormBuilder);
 
-  ngOnInit(): void {
+  @Input() modeModal: boolean = false;
+  @Input() hiddenButtons: boolean = false;
+  @Output() return = new EventEmitter<void>();
+  paymentForm: FormGroup;
+  isSubmitting = false;
+
+  constructor() {
     this.paymentForm = this.fb.group({
       cardHolderName: ['', [Validators.required, Validators.minLength(5)]],
-      cardNumber: ['', [Validators.required, Validators.pattern('^[0-9]{16}$')]],
+      cardNumber: [
+        '',
+        [Validators.required, Validators.pattern(/^\d{16}$/)], // 16 dígitos
+      ],
       expiryDate: [
         '',
-        [Validators.required, Validators.pattern('^(0[1-9]|1[0-2])/(2[5-9]|3[0-9])$')],
-      ], // aceita 25-39
-      cvv: ['', [Validators.required, Validators.pattern('^[0-9]{3,4}$')]],
+        [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)], // MM/AA
+      ],
+      cvv: ['', [Validators.required, Validators.pattern(/^\d{3,4}$/)]],
       saveCard: [false],
     });
   }
@@ -57,34 +42,39 @@ export class Checkoutsdetails implements OnInit {
   onSubmit(): void {
     if (this.paymentForm.invalid) {
       this.paymentForm.markAllAsTouched();
-      Swal.fire('Formulário Inválido', 'Verifique os dados do cartão.', 'warning');
       return;
     }
 
     this.isSubmitting = true;
-    const paymentDetails: PaymentRequestDTO = {
-      cardNumber: this.paymentForm.value.cardNumber.replace(/\s/g, ''),
-      cardHolderName: this.paymentForm.value.cardHolderName,
-      expiryDate: this.paymentForm.value.expiryDate,
-      cvv: this.paymentForm.value.cvv,
-      saveCard: this.paymentForm.value.saveCard,
-    };
+
+    Swal.fire({
+      title: 'Processando pagamento...',
+      didOpen: () => Swal.showLoading(),
+      allowOutsideClick: false,
+    });
+
+    const paymentDetails = this.paymentForm.value;
 
     this.orderService.submitCheckout(paymentDetails).subscribe({
       next: (order) => {
         this.isSubmitting = false;
-        Swal.fire(
-          'Compra Realizada!',
-          `Seu pedido #${order.id} foi processado com sucesso.`,
-          'success'
-        );
-        this.return.emit(order);
+        Swal.close();
+        Swal.fire({
+          title: 'Pagamento Aprovado!',
+          text: `Seu pedido #${order.id} foi criado com sucesso.`,
+          icon: 'success',
+        });
+        this.return.emit();
+        this.router.navigate(['/admin/cars']);
       },
       error: (err) => {
         this.isSubmitting = false;
-        const erroMsg =
-          err.error?.message || err.message || 'Não foi possível processar seu pagamento.';
-        Swal.fire('Pagamento Falhou', erroMsg, 'error');
+        Swal.close();
+        Swal.fire({
+          title: 'Erro no Pagamento',
+          text: err.error || 'Erro inesperado.',
+          icon: 'error',
+        });
       },
     });
   }
